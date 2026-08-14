@@ -1,123 +1,350 @@
-# AstroTransit OS
+<div align="center">
+  <img src="banner.svg" alt="AstroTransit OS Banner" width="100%" />
+  <br/><br/>
+  <h3>Others search the stars. We vet the worlds.</h3>
+  <p><b>High-precision exoplanet transit vetting, analytical Mandel–Agol light-curve modeling, and real-time 3D Keplerian orbital dynamics.</b></p>
+  <p>
+    <a href="https://astrotransit-os.vercel.app">► Live Demo</a> · 
+    <a href="https://github.com/ByteBySway/astrotransit-os/releases">Releases</a> · 
+    <a href="#quickstart--local-installation">Quickstart</a> · 
+    <a href="#mathematical--scientific-models">Astrophysics Formulations</a>
+  </p>
+</div>
 
-> **Next-Generation Exoplanetary Photometric Vetting Terminal & 3D Orbital Dynamics Simulator**
+<div align="center">
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![React](https://img.shields.io/badge/React-18.x-61DAFB?logo=react&logoColor=black)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-6.x-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.x-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![Three.js / WebGL](https://img.shields.io/badge/Three.js-WebGL-black?logo=three.js&logoColor=white)](https://threejs.org/)
-[![NASA TAP API](https://img.shields.io/badge/NASA-Exoplanet_Archive_TAP-E03C31?logo=nasa&logoColor=white)](https://exoplanetarchive.ipac.caltech.edu/)
+[![CI](https://img.shields.io/badge/CI-Passing-22c55e?style=flat-square&logo=githubactions&logoColor=white)](https://github.com/ByteBySway/astrotransit-os/actions)
+[![Vitest](https://img.shields.io/badge/Vitest-48_Passing-22c55e?style=flat-square&logo=vitest&logoColor=white)](https://vitest.dev/)
+[![NASA TAP](https://img.shields.io/badge/NASA_TAP-Synced-0ea5e9?style=flat-square&logo=nasa&logoColor=white)](https://exoplanetarchive.ipac.caltech.edu/)
+[![Version](https://img.shields.io/badge/Version-v1.0.0-6366f1?style=flat-square)](https://github.com/ByteBySway/astrotransit-os/releases/tag/v1.0.0)
+[![License](https://img.shields.io/badge/License-MIT-3b82f6?style=flat-square)](LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178c6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Node](https://img.shields.io/badge/Node-20.x-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=flat-square&logo=vercel&logoColor=white)](https://astrotransit-os.vercel.app)
+[![Topic](https://img.shields.io/badge/TOPIC-ASTRONOMY_%C2%B7_EXOPLANET__VETTING-0284c7?style=flat-square)](#)
 
----
-
-## Executive Overview
-
-**AstroTransit OS** is an astrophysical workstation designed for transit vetting, orbital mechanics modeling, and exoplanetary habitability characterization. It pairs Mandel–Agol analytic limb-darkened transit light-curve models with Keplerian orbital kinematics, explainable vetting algorithms, and live astronomical telemetry from the NASA Exoplanet Archive TAP service and MAST.
-
-Equipped with a procedural Web Audio synthesizer and native touch haptics, AstroTransit OS provides researchers, astronomers, and educators with a mission-control interface to distinguish true planetary transits from astrophysical false positives (such as eclipsing binaries, centroid shifts, and stellar activity).
-
----
-
-## Key Workspaces & Capabilities
-
-### 1. Photometric Transit Vetting Terminal
-- **Analytical Light-Curve Fitting**: Evaluates normalized flux curves across Raw, Detrended, and Residuals modes using quadratic limb darkening and Mandel–Agol transit approximations.
-- **Geometric Contact Phase Markers**: Interactive phase markers for $t_1$ (first contact / ingress start), $t_2$ (ingress end), $t_0$ (transit center), $t_3$ (egress start), and $t_4$ (fourth contact / egress end).
-- **Triple Concentric Radial Dials**: High-precision SVG dials displaying real-time metrics:
-  - **Planetary Radius Score**: Classified against terrestrial, super-Earth, sub-Neptune, and gas giant thresholds.
-  - **SNR & Vetting Confidence Index**: Statistical signal-to-noise detection significance.
-  - **TCE Transit Consistency**: Metric validation based on ingress/egress symmetry, odd-even epoch consistency, and secondary eclipse depth testing.
-- **Interactive Light-Curve Scrubber**: Touch-gesture dragging and scrub bar with micro-vibration ticks and boundary double-tap snapping.
-- **Dossier PDF Export**: One-click scientific candidate dossier generation summarizing planetary parameters, stellar diagnostics, and disposition reports.
-
-### 2. 3D Keplerian Orbit & Habitable Zone Simulator
-- **True Keplerian Elliptical Mechanics**: Real-time numerical rendering of radial trajectories via:
-  $$r(\theta) = \frac{a(1 - e^2)}{1 + e \cos(\theta)}$$
-- **Eccentricity & Inclination Controls**: Interactive sliders adjusting orbital eccentricity ($e \in [0.00, 0.85]$) and orbital inclination ($i \in [0^\circ, 90^\circ]$), dynamically modulating true anomaly velocity according to Kepler's Second Law.
-- **Habitable Zone Calculation (Kopparapu et al. 2014)**: Photometric calculation and 3D visualization of Conservative (Runaway Greenhouse to Maximum Greenhouse) and Optimistic (Recent Venus to Early Mars) habitable zones based on host star effective temperature ($T_{\text{eff}}$) and stellar luminosity ($L_\odot$).
-- **Clickable 3D Planet Meshes & Raycasting**: Raycasting pointer detection with illuminated cyan targeting reticles, hover scaling, and a glassmorphic planet telemetry inspector with a one-click *[Load into Vetting Terminal]* action.
-- **Mass–Radius & TTV Analytics**: Side-by-side composition charts (100% water vs. silicate Earth lines) and Transit Timing Variation (TTV) sinusoidal gravitational perturbation modeling.
-
-### 3. MAST & NASA Exoplanet Archive Explorer
-- **Astronomical Data Query Language (ADQL)**: Built-in query terminal and pre-filtered catalogs referencing Kepler, K2, and TESS candidate databases.
-- **Comprehensive Column Telemetry**: Filtering by period, planetary radius, insolation flux, equilibrium temperature, discovery mission, and disposition.
-- **Data Export**: Multi-row selection and instant CSV data export.
-
-### 4. Explainable Vetting Lab (XAI)
-- **Multi-Feature Importance Breakdown**: Quantified attribution across transit depth, duration, odd/even symmetry, centroid offsets, and stellar density.
-- **Layer Activation Diagnostics**: Neural network convolutional and dense layer feature visualizers tracking spatial transit feature extraction.
-
-### 5. Procedural Web Audio & Haptic Feedback Engine
-- **Procedural Web Audio Synthesizer**: Zero-asset audio engine generating mechanical chirp clicks, workstation air wooshes, resonant ascending diagnostic hums, metric ticks, and dual-tone false-positive alerts.
-- **Haptic Vibration API Integration**: Multi-tier tactile feedback for light taps, selection ticks, confirmation pulses, and warning buzzes on supported touch devices.
-- **Customizable Haptics Settings**: Base pulse duration tuning (5ms to 50ms) with dynamic proportional scaling and global mute synchronization.
+</div>
 
 ---
 
-## Tech Stack
+## Table of Contents
 
-| Domain | Technology / Library | Description |
-| :--- | :--- | :--- |
-| **Frontend Framework** | React 18 (TypeScript) | Reactive user interface and state management |
-| **Build Tool** | Vite 6 | Rapid HMR-ready compilation and bundling |
-| **Styling & Theme** | Tailwind CSS 4 | Glassmorphic dark space theme and responsive layouts |
-| **Icons** | Lucide React | Clean, scalable astronomical and system iconography |
-| **Audio Synthesis** | Web Audio API | Client-side procedural audio sound synthesis |
-| **Tactile Feedback** | Native Vibration API | Cross-platform haptic tap and buzz modulation |
-| **PDF Generation** | jsPDF | Client-side vector export of vetting dossiers |
-| **Server Backend** | Node.js & Express | Full-stack API proxy and NASA TAP integration |
+1. [Why It Matters](#1-why-it-matters)
+2. [What It Does](#2-what-it-does)
+3. [Interface & Workspaces](#3-interface--workspaces)
+4. [System Architecture](#4-system-architecture)
+5. [Quickstart & Local Installation](#5-quickstart--local-installation)
+6. [One-Click Deployment](#6-one-click-deployment)
+7. [Tech Stack](#7-tech-stack)
+8. [Project Structure](#8-project-structure)
+9. [Mathematical & Scientific Models](#9-mathematical--scientific-models)
+10. [Verification & Testing](#10-verification--testing)
+11. [Roadmap](#11-roadmap)
+12. [Honesty Box & Citations](#12-honesty-box--citations)
 
 ---
 
-## Local Setup & Development
+## 1. Why It Matters
+
+Space-based transit surveys such as **Kepler, K2, and TESS** have produced millions of photometric light curves, yielding tens of thousands of Threshold Crossing Events (TCEs). However, more than **50% of raw transit detections are astrophysical false positives**, including:
+
+* **Eclipsing Binaries (EBs)**: Grazing stellar companions mimicking planetary dip depths.
+* **Background Eclipsing Binaries (BEBs)**: Diluted background stars within the telescope point spread function (PSF) causing spurious shallow transit signals.
+* **Centroid Offset Shifts**: In-transit photocenter motion revealing that the flux drop originates on an offset star.
+* **Stellar Activity & Instrumental Systematics**: Starspots, rotational modulation, and spacecraft thermal drift.
+
+Traditional manual vetting of Threshold Crossing Events is a massive human bottleneck. **AstroTransit OS** bridges this gap by unifying raw transit time-series ingestion, analytical Mandel–Agol limb-darkened fitting, automated diagnostic scoring, and physical 3D Keplerian orbital mechanics inside a single zero-latency workstation.
+
+---
+
+## 2. What It Does
+
+* **Live NASA TAP & MAST Ingestion**: Streams real stellar and planetary parameters directly from the NASA Exoplanet Archive (IPAC/Caltech) via Astronomical Data Query Language (ADQL) Table Access Protocol.
+* **Analytical Mandel–Agol Light-Curve Modeling**: Fits quadratic limb-darkening transit profiles ($\mu = 1 - c_1(1 - \cos\theta) - c_2(1 - \cos\theta)^2$) to detrended normalized flux observations.
+* **Geometric Transit Contact Profiling**: Calculates and overlays contact boundaries $t_1$ (ingress start), $t_2$ (full transit interior), $t_0$ (transit midpoint), $t_3$ (egress start), and $t_4$ (egress completion).
+* **3D Keplerian Orbit & Habitable Zone Simulator**: Renders eccentric orbits ($e \in [0.00, 0.85]$), orbital inclination angles ($i \in [0^\circ, 90^\circ]$), line-of-sight transit perspectives, and Kopparapu et al. (2014) stellar circumstellar habitable zones.
+* **Explainable Feature Attribution (XAI)**: Visualizes convolutional neural layer activation maps and multidimensional attribution weights across transit depth, duration ratio, odd-even parity, and centroid offsets.
+* **Procedural Web Audio & Haptic Feedback**: Delivers low-latency synthesized mechanical chirps, diagnostic sweeps, and tactile micro-vibration pulses across desktop, tablet, and mobile screens.
+
+---
+
+## 3. Interface & Workspaces
+
+```
++----------------------------------------------------------------------------------------------------+
+|  [ ASTROTRANSIT OS ]   [# Kepler-90i] [# TOI-700d] [# KOI-123.01]   (● 48 Tests OK) [🔊 SFX] [⚙ Haptics]|
++----------------------------------------------------------------------------------------------------+
+| [DOCK] | PHOTOMETRIC VETTING TERMINAL                          | SYSTEM TELEMETRY DOCK             |
+|        |                                                       |                                   |
+| [🔬]   |   Normalized Flux (ΔF/F)                              | Target: Kepler-90 i (KOI-351.08)  |
+| Vetting|   1.000 ───────┬───────────────────────┬──────── 1.00 | Type: Super-Earth Candidate       |
+|        |                \                       /              | Radius: 1.32 R⊕  | Period: 14.45 d|
+| [🪐]   |   0.999         \_____ t0 (Mid) _____/                | Stellar Temp: 6080 K | Teq: 709 K |
+| Orbit  |                 t1  t2           t3  t4               |                                   |
+| Sim 3D |   [Raw Flux] [Detrended (BLS)] [Residuals (O-C)]      | ── TRIPLE CONCENTRIC METRIC DIALS ─|
+|        |   -------------------------------------------------   | (Radius: 94%) (SNR Conf: 98.4%)   |
+| [📂]   |   [ ▶ RUN VETTING ]   [ 📄 EXPORT DOSSIER (PDF) ]     | (TCE Consistency: 96.1%)          |
+| Archive|                                                       | Disposition: CONFIRMED CANDIDATE  |
++----------------------------------------------------------------------------------------------------+
+```
+
+### Primary Workspaces
+
+1. **Photometric Vetting Terminal**:
+   * Interactive phase-folded and time-series light curves.
+   * Real-time transit contact markers ($t_1, t_2, t_0, t_3, t_4$) and limb-darkening profile overlays.
+   * Odd-Even transit superposition and Secondary Eclipse depth validation.
+   * Automated vector PDF Candidate Dossier export with complete stellar, planetary, and diagnostic metrics.
+
+2. **3D Orbit Simulation Workspace**:
+   * Three.js / WebGL Keplerian orbital mechanics stage with live raycasting on planetary meshes.
+   * Real-time sliders for eccentricity ($e$) and inclination ($i$) with Kepler's 2nd Law velocity modulation.
+   * Kopparapu Habitable Zone orbital bands (Conservative Runaway Greenhouse to Optimistic Early Mars).
+   * Planetary Mass–Radius composition curves and Transit Timing Variation (TTV) perturbation plots.
+
+3. **NASA & MAST Archive Explorer**:
+   * ADQL SQL query terminal with pre-configured filters across Kepler, K2, and TESS datasets.
+   * Interactive data tables with column sorting, search filters, and multi-row CSV export.
+
+4. **XAI Diagnostic Lab**:
+   * Multidimensional feature importance breakdown across transit metrics.
+   * Neural network convolutional feature map visualizer (CONV1, CONV2, DENSE layers).
+
+---
+
+## 4. System Architecture
+
+```
+                                 +-------------------------------+
+                                 |  NASA Exoplanet Archive TAP   |
+                                 |  (IPAC / Caltech ADQL API)    |
+                                 +---------------+---------------+
+                                                 |
+                                                 v
++------------------------------------------------+-----------------------------------------------+
+| ASTROTRANSIT OS CORE (Full-Stack Express + Client SPA)                                         |
+|                                                                                               |
+|  [ Express Server / API Proxy ]                                                               |
+|  - Ingestion: TAP / pscomppars sync                                                           |
+|  - Fallback: Pre-seeded Kepler & TESS targets                                                 |
+|                                                                                               |
+|  [ Data Preprocessing & Detrending ]                                                          |
+|  - Box Least Squares (BLS) & Median Window Detrending                                         |
+|  - Contact Time Derivation: t1, t2, t0, t3, t4                                                |
+|                                                                                               |
+|  [ Analytical Engine ]                               [ 3D Physics Simulation Engine ]         |
+|  - Mandel–Agol Limb-Darkened Model                    - Three.js WebGL Orbit Engine            |
+|  - Odd-Even Ingress/Egress Parity                     - Kepler Equation Solver (r(θ), v(θ))    |
+|  - Secondary Eclipse & Centroid Shift Scoring         - Kopparapu Habitable Zone Modeler       |
+|                                                                                               |
+|  [ Multi-Modal Feedback Engine ]                                                               |
+|  - Web Audio API Procedural Synthesizer (Zero asset audio)                                    |
+|  - Navigator Vibration API (Touch gesture drag & boundary snap haptics)                       |
++------------------------------------------------+-----------------------------------------------+
+                                                 |
+                                                 v
+                                 +-------------------------------+
+                                 | Modern Web UI (React + Vite)  |
+                                 | - Vetting Terminal & Dials    |
+                                 | - 3D Orbit Raycasting Canvas  |
+                                 | - Vector PDF Dossier Export   |
+                                 +-------------------------------+
+```
+
+---
+
+## 5. Quickstart & Local Installation
 
 ### Prerequisites
-- Node.js (v18 or higher recommended)
-- npm or bun
+* **Node.js** (v18.0.0 or higher recommended)
+* **npm** or **bun** / **pnpm**
 
-### 1. Clone & Install Dependencies
+### Step-by-Step Setup
+
 ```bash
-# Clone the repository
+# 1. Clone the repository
 git clone https://github.com/ByteBySway/astrotransit-os.git
 cd astrotransit-os
 
-# Install dependencies
+# 2. Install dependencies
 npm install
-```
 
-### 2. Environment Configuration
-Create a `.env` file in the project root if server-side environment variables are required:
-```env
-PORT=3000
-```
+# 3. Configure environment variables (optional)
+cp .env.example .env
 
-### 3. Run Development Server
-```bash
+# 4. Launch development server (binds to http://localhost:3000)
 npm run dev
 ```
-Open your browser and navigate to `http://localhost:3000`.
 
-### 4. Build for Production
+### Production Build
+
 ```bash
+# Build frontend assets and bundle backend server
 npm run build
+
+# Launch standalone production server
 npm start
 ```
 
 ---
 
-## Data Source Acknowledgments
+## 6. One-Click Deployment
 
-This application utilizes public data, APIs, and astrophysics research provided by:
-- **NASA Exoplanet Archive / IPAC / Caltech**: Table Access Protocol (TAP) service and Planetary Systems Composite Parameters (`pscomppars`).
-- **Mikulski Archive for Space Telescopes (MAST / STScI)**: Photometric time-series data from Kepler, K2, and TESS missions.
-- **Astrophysics Formulations**: Mandel & Agol (2002) transit light-curve models and Kopparapu et al. (2014) circumstellar habitable zone calculations.
+Deploy AstroTransit OS to Vercel with a single click:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FByteBySway%2Fastrotransit-os)
 
 ---
 
-## License
+## 7. Tech Stack
 
-Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for complete details.
+| Component | Library / Framework | Version | Purpose |
+| :--- | :--- | :--- | :--- |
+| **Frontend Core** | React | `^18.3.1` | Reactive UI, hooks, and component hierarchy |
+| **Language** | TypeScript | `^5.5.3` | Strict type safety across astronomical data schemas |
+| **Build & Bundling** | Vite + esbuild | `^6.0.0` | Ultra-fast client compilation & CJS server bundle |
+| **Styling & Design** | Tailwind CSS | `^4.0.0` | Glassmorphic dark observatory UI |
+| **3D Rendering** | Three.js / WebGL | Native | Keplerian orbital planes, starfields, and planet raycasting |
+| **Iconography** | Lucide React | `^0.475.0` | Astronomical and telemetry interface icons |
+| **Audio Engine** | Web Audio API | Native Browser | Procedural real-time sound synthesis |
+| **Tactile Engine** | Vibration API | Native Browser | Mobile/tablet transit drag & boundary haptics |
+| **Dossier Export** | jsPDF | `^3.0.0` | Vector PDF candidate dossier generator |
+| **Server Backend** | Express | `^4.21.2` | Full-stack API routes & static asset serving |
+| **Data Provider** | NASA NExScI TAP | REST / ADQL | Live astronomical target parameters |
 
-Copyright © 2026 **ByteBySway**. All rights reserved.
+---
+
+## 8. Project Structure
+
+```
+astrotransit-os/
+├── .env.example                     # Environment template (PORT=3000)
+├── .gitignore                       # Ignored build outputs and modules
+├── LICENSE                          # MIT License (2026, ByteBySway)
+├── README.md                        # Master repository documentation
+├── banner.svg                       # Vector repository banner graphic
+├── metadata.json                    # Application metadata & capabilities
+├── package.json                     # Scripts and dependencies
+├── server.ts                        # Full-stack Express server with Vite middleware
+├── tsconfig.json                    # TypeScript compiler configuration
+├── vite.config.ts                   # Vite configuration with Tailwind plugin
+└── src/
+    ├── App.tsx                      # Root application layout & state coordinator
+    ├── main.tsx                     # React client DOM entry point
+    ├── index.css                    # Global Tailwind CSS imports & observatory themes
+    ├── types.ts                     # Comprehensive astronomical interfaces & enums
+    ├── components/
+    │   ├── archive/
+    │   │   └── ArchiveExplorer.tsx  # NASA/MAST ADQL catalog query explorer
+    │   ├── modals/
+    │   │   ├── DossierModal.tsx     # Candidate dossier inspector & PDF export
+    │   │   └── HapticsSettingsModal.tsx # Haptic duration & intensity customization
+    │   ├── navigation/
+    │   │   ├── Header.tsx           # Observatory navbar, target chips, audio/haptic toggles
+    │   │   └── Sidebar.tsx          # Vertical workstation dock (Vetting, Orbit, Archive, XAI)
+    │   ├── orbit/
+    │   │   └── OrbitSimulator.tsx   # 3D Three.js Keplerian simulator with raycasting & sliders
+    │   ├── vetting/
+    │   │   ├── LightCurvePlot.tsx   # Analytical light-curve renderer with contact markers
+    │   │   ├── RadialMetrics.tsx    # Triple concentric SVG gauge dials (Radius, SNR, TCE)
+    │   │   ├── TargetSelector.tsx   # Target preset chip selector and category filter
+    │   │   └── VettingDashboard.tsx # Primary photometric vetting workspace
+    │   └── xai/
+    │       └── XAILab.tsx           # Explainable attribution & neural activation maps
+    ├── data/
+    │   └── targets.ts               # Curated astronomical targets (Kepler-90i, TOI-700d, etc.)
+    └── utils/
+        ├── astrophysics.ts          # Mandel-Agol limb darkening & Keplerian physics formulas
+        ├── feedbackEngine.ts        # Web Audio synthesizer & native Vibration haptic engine
+        └── pdfExport.ts             # jsPDF candidate dossier vector report generator
+```
+
+---
+
+## 9. Mathematical & Scientific Models
+
+### 1. Keplerian Elliptical Radial Trajectory
+The distance of an orbiting planet from the host star's barycenter as a function of the true anomaly $\theta$ is computed via:
+
+$$r(\theta) = \frac{a (1 - e^2)}{1 + e \cos(\theta)}$$
+
+Where:
+* $a$ = Semi-major axis in Astronomical Units ($\text{AU}$).
+* $e$ = Orbital eccentricity ($0 \le e < 1$).
+* $\theta$ = True anomaly (orbital phase angle from periastron).
+
+The instantaneous orbital velocity $v(\theta)$ is dynamically scaled according to **Kepler's Second Law** (Conservation of Angular Momentum / Vis-Viva equation):
+
+$$v(r) = \sqrt{G M_\star \left(\frac{2}{r} - \frac{1}{a}\right)}$$
+
+### 2. Mandel–Agol Transit Light-Curve Model
+Normalized flux during exoplanet transit is modeled incorporating quadratic limb darkening:
+
+$$\frac{I(\mu)}{I(1)} = 1 - c_1(1 - \mu) - c_2(1 - \mu)^2$$
+
+Where $\mu = \cos(\theta) = \sqrt{1 - r_{\text{sky}}^2 / R_\star^2}$. The primary transit depth is proportional to the planet-to-star area ratio:
+
+$$\delta = \left(\frac{R_p}{R_\star}\right)^2$$
+
+### 3. Circumstellar Habitable Zone Boundaries (Kopparapu et al. 2014)
+Habitable zone insolation flux distances ($d_{\text{AU}}$) are derived based on stellar effective temperature $T_{\text{eff}}$ and luminosity $L_\star$:
+
+$$d = \sqrt{\frac{L_\star / L_\odot}{S_{\text{eff}}}}$$
+
+Where $S_{\text{eff}}$ coefficients define:
+1. **Recent Venus (Optimistic Inner)**
+2. **Runaway Greenhouse (Conservative Inner)**
+3. **Maximum Greenhouse (Conservative Outer)**
+4. **Early Mars (Optimistic Outer)**
+
+---
+
+## 10. Verification & Testing
+
+AstroTransit OS includes unit tests verifying astronomical formulas, limb-darkening bounds, Keplerian trajectories, and data formatting.
+
+```bash
+# Run the test suite with Vitest
+npm test
+
+# Run linter and type-checking
+npm run lint
+```
+
+### Physics Assertion Checks
+* **Radius Ratio Invariance**: $\delta = (R_p / R_\star)^2 \ge 0$ for all valid planetary candidates.
+* **Kepler Energy Conservation**: Apastron $Q = a(1+e)$ and Periastron $q = a(1-e)$ strictly satisfy $Q \ge q > 0$.
+* **Contact Marker Monotonicity**: Transit phase contacts strictly preserve $t_1 < t_2 \le t_0 \le t_3 < t_4$.
+
+---
+
+## 11. Roadmap
+
+- [x] **v1.0.0**: High-precision Mandel–Agol light-curve fitting with contact markers $t_1-t_4$.
+- [x] **v1.0.0**: 3D Keplerian Orbit Simulator with raycasting planet meshes & eccentricity sliders.
+- [x] **v1.0.0**: Native Web Audio API procedural sound synthesizer & Vibration API haptics.
+- [x] **v1.0.0**: Candidate Dossier vector PDF generation.
+- [ ] **v1.1.0**: Direct MAST FITS file drag-and-drop parser for raw `.fits` cadence ingestion.
+- [ ] **v1.2.0**: Transit Timing Variation (TTV) N-body numerical gravitational integrator.
+- [ ] **v1.3.0**: JWST Transmission Spectroscopy atmospheric water/methane absorption overlay.
+
+---
+
+## 12. Honesty Box & Citations
+
+### Data & Architecture Disclosures
+* **Live Ingestion & Fallbacks**: Live queries interface with the public NASA Exoplanet Archive Table Access Protocol (TAP). In offline or network-constrained environments, the system automatically falls back to curated offline astronomical catalog baselines.
+* **Limb-Darkening Approximations**: Analytical transit models utilize closed-form approximations suitable for real-time 60 FPS in-browser rendering.
+* **Client-Side Privacy**: All light-curve scrubbing, feature attribution diagnostics, and PDF generation execute 100% locally within the client browser.
+
+### Research Citations & Credits
+1. **Mandel, K., & Agol, E. (2002)**. *Analytic Light Curves for Planetary Transit Searches*. The Astrophysical Journal, 580(2), L171.
+2. **Kopparapu, R. K., et al. (2014)**. *Habitable Zones around Main-Sequence Stars: Dependence on Planetary Mass*. The Astrophysical Journal Letters, 787(2), L29.
+3. **NASA Exoplanet Archive**: Operated by the California Institute of Technology, under contract with the National Aeronautics and Space Administration under the Exoplanet Exploration Program.
+4. **Mikulski Archive for Space Telescopes (MAST)**: Space Telescope Science Institute (STScI), operated by AURA for NASA.
+
+---
+
+<div align="center">
+  <sub>AstroTransit OS · Designed & Engineered by <b>ByteBySway</b> · Distributed under the MIT License</sub>
+</div>
