@@ -1,0 +1,6 @@
+{
+  "name": "AstroTransit OS",
+  "description": "Astrophysics Photometric Vetting Terminal, 3D Habitable Zone Orbit Simulator, MAST Archive Explorer, and XAI Diagnostic Lab for exoplanet discovery.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
