@@ -1,12 +1,13 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { TargetPlanet, getPlanetaryClassification } from '../../types';
 import { 
   Compass,
   Play,
   Pause,
-  Sliders,
-  Sparkles
+  RotateCcw,
+  Globe
 } from 'lucide-react';
 
 interface HeroPlanetaryGlobeProps {
@@ -195,30 +196,20 @@ function createProceduralPlanetTextures(
 }
 
 export const HeroPlanetaryGlobe: React.FC<HeroPlanetaryGlobeProps> = ({ target }) => {
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const canvasContainerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const controlsRef = useRef<OrbitControls | null>(null);
 
   // Interaction & View Mode State
   const [isRotating, setIsRotating] = useState(true);
   const [renderMode, setRenderMode] = useState<'SPLIT' | 'TEXTURE' | 'WIREFRAME'>('SPLIT');
-  const [splitOffset, setSplitOffset] = useState(0.5); // 0.0 to 1.0 (where wireframe begins)
 
-  // Dragging split slider state
-  const [isDraggingSplit, setIsDraggingSplit] = useState(false);
-
-  // Animation & Interaction Refs
-  const yawRef = useRef(0.5);
-  const pitchRef = useRef(0.2);
-  const isRotatingRef = useRef(true);
-  const isDraggingPlanetRef = useRef(false);
-  const lastMousePosRef = useRef({ x: 0, y: 0 });
   const renderModeRef = useRef<'SPLIT' | 'TEXTURE' | 'WIREFRAME'>('SPLIT');
-  const splitOffsetRef = useRef(0.5);
+  const isRotatingRef = useRef(true);
 
-  // Sync refs
-  isRotatingRef.current = isRotating;
+  // Keep refs in sync for render loop
   renderModeRef.current = renderMode;
-  splitOffsetRef.current = splitOffset;
+  isRotatingRef.current = isRotating;
 
   const classification = getPlanetaryClassification(target.planetRadius);
   const isEarthStandard = target.id === 'Earth-Standard' || target.name.toLowerCase().includes('earth');
@@ -226,104 +217,28 @@ export const HeroPlanetaryGlobe: React.FC<HeroPlanetaryGlobeProps> = ({ target }
   // Seed for procedural variations if non-Earth
   const seed = target.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
 
-  // Mouse / Touch handlers for 3D Globe Rotation
-  const handlePlanetMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    isDraggingPlanetRef.current = true;
-    lastMousePosRef.current = { x: e.clientX, y: e.clientY };
-  };
-
-  const handlePlanetMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!isDraggingPlanetRef.current) return;
-    const deltaX = e.clientX - lastMousePosRef.current.x;
-    const deltaY = e.clientY - lastMousePosRef.current.y;
-    
-    yawRef.current += deltaX * 0.008;
-    pitchRef.current = Math.max(-1.1, Math.min(1.1, pitchRef.current + deltaY * 0.008));
-    lastMousePosRef.current = { x: e.clientX, y: e.clientY };
-  };
-
-  const handlePlanetMouseUp = () => {
-    isDraggingPlanetRef.current = false;
-  };
-
-  const handlePlanetTouchStart = (e: React.TouchEvent<HTMLCanvasElement>) => {
-    if (e.touches.length === 1) {
-      isDraggingPlanetRef.current = true;
-      lastMousePosRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  // Reset view handler
+  const handleResetView = () => {
+    if (controlsRef.current) {
+      controlsRef.current.reset();
     }
   };
-
-  const handlePlanetTouchMove = (e: React.TouchEvent<HTMLCanvasElement>) => {
-    if (!isDraggingPlanetRef.current || e.touches.length !== 1) return;
-    const deltaX = e.touches[0].clientX - lastMousePosRef.current.x;
-    const deltaY = e.touches[0].clientY - lastMousePosRef.current.y;
-    
-    yawRef.current += deltaX * 0.008;
-    pitchRef.current = Math.max(-1.1, Math.min(1.1, pitchRef.current + deltaY * 0.008));
-    lastMousePosRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-  };
-
-  const handlePlanetTouchEnd = () => {
-    isDraggingPlanetRef.current = false;
-  };
-
-  // Dragging the Split Scanline handle
-  const handleSplitDragStart = (e: React.MouseEvent | React.TouchEvent) => {
-    e.stopPropagation();
-    setIsDraggingSplit(true);
-  };
-
-  const handleSplitDragMove = useCallback((clientX: number) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const relativeX = (clientX - rect.left) / rect.width;
-    const clamped = Math.max(0.08, Math.min(0.92, relativeX));
-    setSplitOffset(clamped);
-  }, []);
-
-  useEffect(() => {
-    const handleGlobalMouseMove = (e: MouseEvent) => {
-      if (isDraggingSplit) {
-        handleSplitDragMove(e.clientX);
-      }
-    };
-    const handleGlobalMouseUp = () => {
-      setIsDraggingSplit(false);
-    };
-    const handleGlobalTouchMove = (e: TouchEvent) => {
-      if (isDraggingSplit && e.touches.length > 0) {
-        handleSplitDragMove(e.touches[0].clientX);
-      }
-    };
-    const handleGlobalTouchEnd = () => {
-      setIsDraggingSplit(false);
-    };
-
-    if (isDraggingSplit) {
-      window.addEventListener('mousemove', handleGlobalMouseMove);
-      window.addEventListener('mouseup', handleGlobalMouseUp);
-      window.addEventListener('touchmove', handleGlobalTouchMove);
-      window.addEventListener('touchend', handleGlobalTouchEnd);
-    }
-    return () => {
-      window.removeEventListener('mousemove', handleGlobalMouseMove);
-      window.removeEventListener('mouseup', handleGlobalMouseUp);
-      window.removeEventListener('touchmove', handleGlobalTouchMove);
-      window.removeEventListener('touchend', handleGlobalTouchEnd);
-    };
-  }, [isDraggingSplit, handleSplitDragMove]);
 
   // Main Three.js Scene Setup & Render Loop
   useEffect(() => {
     const canvas = canvasRef.current;
-    const container = containerRef.current;
-    if (!canvas || !container) return;
+    const canvasContainer = canvasContainerRef.current;
+    if (!canvas || !canvasContainer) return;
 
     // 1. Scene, Camera & WebGL Renderer
     const scene = new THREE.Scene();
 
-    const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 50);
-    camera.position.set(0, 0, 2.75);
+    const initialWidth = canvasContainer.clientWidth || 300;
+    const initialHeight = canvasContainer.clientHeight || 260;
+
+    // Perspective camera positioned at camera.position.z = 5.2
+    const camera = new THREE.PerspectiveCamera(45, initialWidth / initialHeight, 0.1, 1000);
+    camera.position.set(0, 0, 5.2);
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -332,209 +247,145 @@ export const HeroPlanetaryGlobe: React.FC<HeroPlanetaryGlobeProps> = ({ target }
       powerPreference: 'high-performance',
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(initialWidth, initialHeight, false);
     renderer.localClippingEnabled = true;
 
-    const resize = () => {
-      if (!container || !renderer) return;
-      const width = container.clientWidth;
-      const height = container.clientHeight;
+    // OrbitControls for smooth interactive rotation
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.enablePan = false;
+    controls.minDistance = 3.0;
+    controls.maxDistance = 12.0;
+    controls.autoRotate = isRotating;
+    controls.autoRotateSpeed = 1.0;
+    controlsRef.current = controls;
+
+    // Precise ResizeObserver on canvas container
+    const handleResize = () => {
+      if (!canvasContainer || !renderer) return;
+      const width = canvasContainer.clientWidth;
+      const height = canvasContainer.clientHeight;
       if (width === 0 || height === 0) return;
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height, false);
     };
-    resize();
+    handleResize();
 
-    const resizeObserver = new ResizeObserver(resize);
-    resizeObserver.observe(container);
+    const resizeObserver = new ResizeObserver(handleResize);
+    resizeObserver.observe(canvasContainer);
 
-    // 2. Directional Sunlight & Ambient Light Setup
-    // Angled from top-right with intensity: 2.2
-    const sunDir = new THREE.Vector3(1.2, 0.75, 0.9).normalize();
-    const sunLight = new THREE.DirectionalLight(0xfff8ea, 2.2);
-    sunLight.position.copy(sunDir.clone().multiplyScalar(10));
-    scene.add(sunLight);
+    // 2. Lighting & Radiance:
+    // DirectionalLight: color 0xffffff, intensity 2.0 positioned at (5, 3, 5)
+    const dirLight = new THREE.DirectionalLight(0xffffff, 2.0);
+    dirLight.position.set(5, 3, 5);
+    scene.add(dirLight);
 
-    // Ambient cosmic fill light with intensity: 0.35
-    const ambientLight = new THREE.AmbientLight(0x0e1b30, 0.35);
+    // AmbientLight: color 0x112244, intensity 0.6
+    const ambientLight = new THREE.AmbientLight(0x112244, 0.6);
     scene.add(ambientLight);
 
-    // 3. Clipping Planes for 50/50 Split View
-    // Terrain visible on left side (x <= splitX), wireframe visible on right side (x >= splitX)
-    const terrainClippingPlane = new THREE.Plane(new THREE.Vector3(-1, 0, 0), 0);
-    const wireframeClippingPlane = new THREE.Plane(new THREE.Vector3(1, 0, 0), 0);
+    // 3. Clipping Planes for True 3D "Split 50/50" View:
+    // Left plane keeps x <= 0 (textured planet left half)
+    const leftClippingPlane = new THREE.Plane(new THREE.Vector3(-1, 0, 0), 0);
+    // Right plane keeps x >= 0 (laser-cyan wireframe right half)
+    const rightClippingPlane = new THREE.Plane(new THREE.Vector3(1, 0, 0), 0);
 
-    // 4. Load Textures (Earth NASA Blue Marble Suite or Procedural Fallback)
+    // 4. Reliable Planetary Texture Mapping
     const textureLoader = new THREE.TextureLoader();
+    textureLoader.setCrossOrigin('anonymous');
 
-    let dayMap: THREE.Texture;
-    let specMap: THREE.Texture;
-    let nightMap: THREE.Texture;
-    let cloudMap: THREE.Texture;
+    const loadTextureWithFallback = (url: string, fallbackUrl?: string) => {
+      const tex = textureLoader.load(
+        url,
+        (loadedTex) => {
+          loadedTex.colorSpace = THREE.SRGBColorSpace;
+        },
+        undefined,
+        () => {
+          if (fallbackUrl) {
+            textureLoader.load(fallbackUrl, (fbTex) => {
+              fbTex.colorSpace = THREE.SRGBColorSpace;
+              tex.image = fbTex.image;
+              tex.needsUpdate = true;
+            });
+          }
+        }
+      );
+      tex.colorSpace = THREE.SRGBColorSpace;
+      return tex;
+    };
+
+    let surfaceMap: THREE.Texture;
+    let normalMap: THREE.Texture | null = null;
+    let specularMap: THREE.Texture | null = null;
+    let cloudsMap: THREE.Texture;
 
     if (isEarthStandard) {
-      dayMap = textureLoader.load('/textures/planets/earth_day.jpg');
-      dayMap.colorSpace = THREE.SRGBColorSpace;
-
-      specMap = textureLoader.load('/textures/planets/earth_specular.jpg');
-      nightMap = textureLoader.load('/textures/planets/earth_night.png');
-      cloudMap = textureLoader.load('/textures/planets/earth_clouds.png');
+      // High-resolution, CORS-friendly Three.js Earth textures
+      surfaceMap = loadTextureWithFallback(
+        'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_atmos_2048.jpg',
+        '/textures/planets/earth_day.jpg'
+      );
+      normalMap = loadTextureWithFallback(
+        'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_normal_2048.jpg',
+        '/textures/planets/earth_normal.jpg'
+      );
+      specularMap = loadTextureWithFallback(
+        'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_specular_2048.jpg',
+        '/textures/planets/earth_specular.jpg'
+      );
+      cloudsMap = loadTextureWithFallback(
+        'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_clouds_1024.png',
+        '/textures/planets/earth_clouds.png'
+      );
     } else {
       const proc = createProceduralPlanetTextures(classification.type, seed);
-      dayMap = proc.dayTexture;
-      specMap = proc.specularTexture;
-      nightMap = proc.nightTexture;
-      cloudMap = proc.cloudTexture;
+      surfaceMap = proc.dayTexture;
+      specularMap = proc.specularTexture;
+      cloudsMap = proc.cloudTexture;
     }
 
-    // 5. Planetary Core Surface Shader Material
-    const planetMaterial = new THREE.ShaderMaterial({
-      clipping: true,
-      uniforms: {
-        uDayMap: { value: dayMap },
-        uNightMap: { value: nightMap },
-        uSpecularMap: { value: specMap },
-        uSunDirection: { value: sunDir },
-        uSunIntensity: { value: 2.2 },
-        uAmbientIntensity: { value: 0.35 },
-      },
-      vertexShader: `
-        varying vec2 vUv;
-        varying vec3 vNormal;
-        varying vec3 vWorldPosition;
-        #include <clipping_planes_pars_vertex>
+    // 5. True 3D Sphere Geometry: new THREE.SphereGeometry(2, 64, 64)
+    const planetGeometry = new THREE.SphereGeometry(2, 64, 64);
 
-        void main() {
-          vUv = uv;
-          vNormal = normalize(normalMatrix * normal);
-          vec4 worldPos = modelMatrix * vec4(position, 1.0);
-          vWorldPosition = worldPos.xyz;
-          vec4 mvPosition = viewMatrix * worldPos;
-          #include <clipping_planes_vertex>
-          gl_Position = projectionMatrix * mvPosition;
-        }
-      `,
-      fragmentShader: `
-        varying vec2 vUv;
-        varying vec3 vNormal;
-        varying vec3 vWorldPosition;
-
-        uniform sampler2D uDayMap;
-        uniform sampler2D uNightMap;
-        uniform sampler2D uSpecularMap;
-        uniform vec3 uSunDirection;
-        uniform float uSunIntensity;
-        uniform float uAmbientIntensity;
-        #include <clipping_planes_pars_fragment>
-
-        void main() {
-          #include <clipping_planes_fragment>
-
-          vec3 normal = normalize(vNormal);
-          vec3 sunDir = normalize(uSunDirection);
-          vec3 viewDir = normalize(cameraPosition - vWorldPosition);
-
-          // Day Lighting (Lambertian with smooth terminator transition)
-          float nDotL = dot(normal, sunDir);
-          float dayFactor = smoothstep(-0.16, 0.16, nDotL);
-
-          // Sample Day Albedo Texture
-          vec4 dayColor = texture2D(uDayMap, vUv);
-
-          // Water specular reflection (Blinn-Phong)
-          vec3 halfVec = normalize(sunDir + viewDir);
-          float nDotH = max(0.0, dot(normal, halfVec));
-          vec4 specSample = texture2D(uSpecularMap, vUv);
-          float waterMask = specSample.r;
-          float specular = pow(nDotH, 28.0) * waterMask * dayFactor * 2.2;
-          vec3 specColor = vec3(0.65, 0.88, 1.0) * specular;
-
-          // Night Lights & Golden Terminator Glow
-          vec4 nightSample = texture2D(uNightMap, vUv);
-          float nightFactor = smoothstep(0.12, -0.16, nDotL);
-          // Soft golden transition glow along the shadow terminator
-          float terminatorGlow = smoothstep(-0.16, 0.0, nDotL) * (1.0 - smoothstep(0.0, 0.16, nDotL));
-          vec3 goldenLight = vec3(1.0, 0.72, 0.32) * terminatorGlow * nightSample.r * 1.8;
-          vec3 nightLights = nightSample.rgb * vec3(1.0, 0.88, 0.62) * nightFactor * 2.4 + goldenLight;
-
-          // Rayleigh scattering limb fresnel
-          float fresnel = pow(1.0 - max(0.0, dot(normal, viewDir)), 3.2);
-          vec3 atmosphereRim = vec3(0.22, 0.74, 0.98) * fresnel * max(0.0, nDotL * 0.7 + 0.3) * 0.75;
-
-          // Combine Diffuse + Specular + Night Emissive
-          vec3 sunColor = vec3(1.0, 0.97, 0.92) * uSunIntensity;
-          vec3 ambientColor = vec3(0.06, 0.11, 0.20) * (uAmbientIntensity * 3.0);
-
-          vec3 diffuse = dayColor.rgb * (sunColor * max(0.0, nDotL) + ambientColor);
-          vec3 finalColor = mix(nightLights, diffuse + specColor, dayFactor) + atmosphereRim;
-
-          gl_FragColor = vec4(finalColor, 1.0);
-        }
-      `,
+    const planetMaterial = new THREE.MeshPhongMaterial({
+      map: surfaceMap,
+      normalMap: normalMap || undefined,
+      normalScale: normalMap ? new THREE.Vector2(0.85, 0.85) : undefined,
+      specularMap: specularMap || undefined,
+      specular: new THREE.Color(0x333333),
+      shininess: 25,
+      clippingPlanes: renderModeRef.current === 'SPLIT' ? [leftClippingPlane] : [],
     });
-
-    const planetGeometry = new THREE.SphereGeometry(1, 64, 64);
     const planetMesh = new THREE.Mesh(planetGeometry, planetMaterial);
 
-    // 6. Atmospheric Fresnel Scattering Rim Mesh (Scale: 1.025)
+    // 6. Concentric Cloud Mesh: slightly larger sphere (radius: 2.02)
+    // with transparent: true, opacity: 0.8
+    const cloudGeometry = new THREE.SphereGeometry(2.02, 64, 64);
+    const cloudMaterial = new THREE.MeshPhongMaterial({
+      map: cloudsMap,
+      transparent: true,
+      opacity: 0.8,
+      blending: THREE.NormalBlending,
+      depthWrite: false,
+      clippingPlanes: renderModeRef.current === 'SPLIT' ? [leftClippingPlane] : [],
+    });
+    const cloudMesh = new THREE.Mesh(cloudGeometry, cloudMaterial);
+
+    // 7. Atmospheric Cyan Fresnel Rim Glow (#38bdf8) radiating starlight
+    const atmosphereGeometry = new THREE.SphereGeometry(2.06, 64, 64);
     const atmosphereMaterial = new THREE.ShaderMaterial({
-      clipping: true,
       side: THREE.BackSide,
       blending: THREE.AdditiveBlending,
       transparent: true,
       depthWrite: false,
-      uniforms: {
-        uAtmosphereColor: { value: new THREE.Color('#38bdf8') }, // Spectral Azure/Cyan
-        uSunDirection: { value: sunDir },
-      },
+      clippingPlanes: renderModeRef.current === 'SPLIT' ? [leftClippingPlane] : [],
       vertexShader: `
         varying vec3 vNormal;
-        varying vec3 vWorldPosition;
         #include <clipping_planes_pars_vertex>
-
         void main() {
-          vNormal = normalize(normalMatrix * normal);
-          vec4 worldPos = modelMatrix * vec4(position, 1.0);
-          vWorldPosition = worldPos.xyz;
-          vec4 mvPosition = viewMatrix * worldPos;
-          #include <clipping_planes_vertex>
-          gl_Position = projectionMatrix * mvPosition;
-        }
-      `,
-      fragmentShader: `
-        varying vec3 vNormal;
-        uniform vec3 uAtmosphereColor;
-        uniform vec3 uSunDirection;
-        #include <clipping_planes_pars_fragment>
-
-        void main() {
-          #include <clipping_planes_fragment>
-          // Back-side Fresnel limb glow
-          float intensity = pow(0.72 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.8);
-          gl_FragColor = vec4(uAtmosphereColor * 1.6, intensity * 0.95);
-        }
-      `,
-    });
-
-    const atmosphereMesh = new THREE.Mesh(planetGeometry, atmosphereMaterial);
-    atmosphereMesh.scale.setScalar(1.025);
-
-    // 7. Independent Dynamic Cloud Sphere (Scale: 1.01)
-    const cloudMaterial = new THREE.ShaderMaterial({
-      clipping: true,
-      transparent: true,
-      depthWrite: false,
-      uniforms: {
-        uCloudMap: { value: cloudMap },
-        uSunDirection: { value: sunDir },
-      },
-      vertexShader: `
-        varying vec2 vUv;
-        varying vec3 vNormal;
-        #include <clipping_planes_pars_vertex>
-
-        void main() {
-          vUv = uv;
           vNormal = normalize(normalMatrix * normal);
           vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
           #include <clipping_planes_vertex>
@@ -542,132 +393,92 @@ export const HeroPlanetaryGlobe: React.FC<HeroPlanetaryGlobeProps> = ({ target }
         }
       `,
       fragmentShader: `
-        varying vec2 vUv;
         varying vec3 vNormal;
-        uniform sampler2D uCloudMap;
-        uniform vec3 uSunDirection;
         #include <clipping_planes_pars_fragment>
-
         void main() {
           #include <clipping_planes_fragment>
-          vec4 cloudSample = texture2D(uCloudMap, vUv);
-          float alpha = cloudSample.r;
-          if (alpha < 0.04) discard;
-
-          vec3 normal = normalize(vNormal);
-          float nDotL = dot(normal, normalize(uSunDirection));
-          float dayLight = smoothstep(-0.2, 0.25, nDotL);
-          vec3 litCloud = vec3(1.0, 1.0, 1.0) * (dayLight * 1.15 + 0.06);
-
-          gl_FragColor = vec4(litCloud, alpha * 0.85);
+          float intensity = pow(0.62 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.2);
+          gl_FragColor = vec4(vec3(0.22, 0.74, 0.98), intensity * 0.85);
         }
       `,
     });
+    const atmosphereMesh = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
 
-    const cloudMesh = new THREE.Mesh(planetGeometry, cloudMaterial);
-    cloudMesh.scale.setScalar(1.01);
-
-    // Group for photorealistic terrain + atmosphere + clouds
+    // Textured planet group containing surface, clouds, and atmosphere
     const texturedPlanetGroup = new THREE.Group();
     texturedPlanetGroup.add(planetMesh);
     texturedPlanetGroup.add(cloudMesh);
     texturedPlanetGroup.add(atmosphereMesh);
     scene.add(texturedPlanetGroup);
 
-    // 8. Modern Holographic Laser-Cyan Wireframe Mesh
-    const wireframeGeometry = new THREE.SphereGeometry(1, 36, 24);
+    // 8. Clean laser-cyan wireframe material for right half / mesh view
+    const wireframeGeometry = new THREE.SphereGeometry(2, 48, 36);
     const wireframeMaterial = new THREE.MeshBasicMaterial({
       color: 0x00f0ff,
       wireframe: true,
       transparent: true,
-      opacity: 0.65,
-      clippingPlanes: [wireframeClippingPlane],
+      opacity: 0.4,
+      clippingPlanes: renderModeRef.current === 'SPLIT' ? [rightClippingPlane] : [],
     });
     const wireframeMesh = new THREE.Mesh(wireframeGeometry, wireframeMaterial);
 
-    // Subtle dark core to block backface wireframe clutter
+    // Subtle dark core to occlude backface wireframe clutter and preserve clean geometry
+    const coreGeometry = new THREE.SphereGeometry(1.99, 48, 36);
     const coreMaterial = new THREE.MeshBasicMaterial({
-      color: 0x020713,
-      clippingPlanes: [wireframeClippingPlane],
+      color: 0x02040a,
+      clippingPlanes: renderModeRef.current === 'SPLIT' ? [rightClippingPlane] : [],
     });
-    const coreMesh = new THREE.Mesh(new THREE.SphereGeometry(0.995, 32, 24), coreMaterial);
-
-    // Geodesic coordinate node dots
-    const pointsMaterial = new THREE.PointsMaterial({
-      color: 0x38bdf8,
-      size: 0.028,
-      transparent: true,
-      opacity: 0.85,
-      clippingPlanes: [wireframeClippingPlane],
-    });
-    const pointsMesh = new THREE.Points(wireframeGeometry, pointsMaterial);
+    const coreMesh = new THREE.Mesh(coreGeometry, coreMaterial);
 
     const wireframeGroup = new THREE.Group();
     wireframeGroup.add(coreMesh);
     wireframeGroup.add(wireframeMesh);
-    wireframeGroup.add(pointsMesh);
     scene.add(wireframeGroup);
 
     // 9. Animation & Render Loop
     let animationFrameId: number;
-    let cloudSpinOffset = 0;
+    let lastRenderMode: 'SPLIT' | 'TEXTURE' | 'WIREFRAME' = renderModeRef.current;
 
     const animate = () => {
-      // Auto-rotation when not dragging
-      if (isRotatingRef.current && !isDraggingPlanetRef.current) {
-        yawRef.current += 0.0028;
+      const mode = renderModeRef.current;
+
+      // Handle mode transitions cleanly with Three.js clipping planes
+      if (mode !== lastRenderMode) {
+        lastRenderMode = mode;
+        if (mode === 'SPLIT') {
+          texturedPlanetGroup.visible = true;
+          wireframeGroup.visible = true;
+
+          planetMaterial.clippingPlanes = [leftClippingPlane];
+          cloudMaterial.clippingPlanes = [leftClippingPlane];
+          atmosphereMaterial.clippingPlanes = [leftClippingPlane];
+
+          wireframeMaterial.clippingPlanes = [rightClippingPlane];
+          coreMaterial.clippingPlanes = [rightClippingPlane];
+        } else if (mode === 'TEXTURE') {
+          texturedPlanetGroup.visible = true;
+          wireframeGroup.visible = false;
+
+          planetMaterial.clippingPlanes = [];
+          cloudMaterial.clippingPlanes = [];
+          atmosphereMaterial.clippingPlanes = [];
+        } else {
+          // WIREFRAME
+          texturedPlanetGroup.visible = false;
+          wireframeGroup.visible = true;
+
+          wireframeMaterial.clippingPlanes = [];
+          coreMaterial.clippingPlanes = [];
+        }
       }
 
-      const yaw = yawRef.current;
-      const pitch = pitchRef.current;
-      const mode = renderModeRef.current;
-      const split = splitOffsetRef.current;
+      // Update interactive OrbitControls
+      controls.autoRotate = isRotatingRef.current;
+      controls.update();
 
-      // Differential Cloud Rotation relative to ground surface
-      cloudSpinOffset += 0.0007;
-
-      // Update Planet Orientation
-      texturedPlanetGroup.rotation.x = pitch;
-      planetMesh.rotation.y = yaw;
-      atmosphereMesh.rotation.y = yaw;
-      cloudMesh.rotation.y = yaw * 1.15 + cloudSpinOffset; // Differential speed!
-
-      // Wireframe Orientation
-      wireframeGroup.rotation.x = pitch;
-      wireframeGroup.rotation.y = yaw;
-
-      // Update Clipping Planes based on View Mode
-      // split ranges 0 to 1; center is 0.5; maps to x in world space: [-1.2 to +1.2]
-      const splitWorldX = (split - 0.5) * 2.2;
-      terrainClippingPlane.constant = splitWorldX;
-      wireframeClippingPlane.constant = -splitWorldX;
-
-      if (mode === 'SPLIT') {
-        texturedPlanetGroup.visible = true;
-        wireframeGroup.visible = true;
-
-        planetMaterial.clippingPlanes = [terrainClippingPlane];
-        atmosphereMaterial.clippingPlanes = [terrainClippingPlane];
-        cloudMaterial.clippingPlanes = [terrainClippingPlane];
-
-        wireframeMaterial.clippingPlanes = [wireframeClippingPlane];
-        coreMaterial.clippingPlanes = [wireframeClippingPlane];
-        pointsMaterial.clippingPlanes = [wireframeClippingPlane];
-      } else if (mode === 'TEXTURE') {
-        texturedPlanetGroup.visible = true;
-        wireframeGroup.visible = false;
-
-        planetMaterial.clippingPlanes = [];
-        atmosphereMaterial.clippingPlanes = [];
-        cloudMaterial.clippingPlanes = [];
-      } else {
-        // WIREFRAME mode
-        texturedPlanetGroup.visible = false;
-        wireframeGroup.visible = true;
-
-        wireframeMaterial.clippingPlanes = [];
-        coreMaterial.clippingPlanes = [];
-        pointsMaterial.clippingPlanes = [];
+      // Independent dynamic cloud movement
+      if (cloudMesh) {
+        cloudMesh.rotation.y += 0.0004;
       }
 
       renderer.render(scene, camera);
@@ -676,25 +487,28 @@ export const HeroPlanetaryGlobe: React.FC<HeroPlanetaryGlobeProps> = ({ target }
 
     animate();
 
-    // 10. Clean-up on unmount or target switch
+    // 10. Clean-up on unmount or target change
     return () => {
       cancelAnimationFrame(animationFrameId);
       resizeObserver.disconnect();
+      controls.dispose();
 
-      // Dispose Three.js resources
       planetGeometry.dispose();
+      cloudGeometry.dispose();
+      atmosphereGeometry.dispose();
       wireframeGeometry.dispose();
+      coreGeometry.dispose();
+
       planetMaterial.dispose();
-      atmosphereMaterial.dispose();
       cloudMaterial.dispose();
+      atmosphereMaterial.dispose();
       wireframeMaterial.dispose();
       coreMaterial.dispose();
-      pointsMaterial.dispose();
 
-      dayMap.dispose();
-      specMap.dispose();
-      nightMap.dispose();
-      cloudMap.dispose();
+      surfaceMap.dispose();
+      if (normalMap) normalMap.dispose();
+      if (specularMap) specularMap.dispose();
+      cloudsMap.dispose();
 
       renderer.dispose();
     };
@@ -702,22 +516,21 @@ export const HeroPlanetaryGlobe: React.FC<HeroPlanetaryGlobeProps> = ({ target }
 
   return (
     <div 
-      ref={containerRef}
-      className="relative rounded-2xl cosmic-glass p-4 flex flex-col justify-between overflow-hidden group shadow-2xl border border-white/[0.08]"
+      className="relative rounded-2xl cosmic-glass p-4 flex flex-col justify-between overflow-hidden group shadow-2xl border border-cyan-500/20 hover:border-cyan-400/50 transition-colors"
     >
-      {/* Atmospheric Celestial Radiance / Back-Glow behind the sphere */}
+      {/* Atmospheric Celestial Radiance / Starlight back-glow */}
       <div 
         className="absolute inset-0 pointer-events-none rounded-2xl transition-opacity duration-700"
         style={{
-          background: 'radial-gradient(circle at center, rgba(56, 189, 248, 0.18) 0%, rgba(0, 240, 255, 0.08) 35%, transparent 70%)',
+          background: 'radial-gradient(circle at center, rgba(56, 189, 248, 0.20) 0%, rgba(0, 240, 255, 0.08) 35%, transparent 70%)',
         }}
       />
 
       {/* Top Header & Mode Controls */}
-      <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-white/[0.08] z-10">
+      <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-cyan-500/20 z-10">
         <div className="flex items-center gap-2">
-          <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-cyan-950/80 border border-cyan-500/30 text-cyan-400">
-            <Compass className="h-3.5 w-3.5 animate-spin-slow" />
+          <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-cyan-950/80 border border-cyan-500/30 text-[#00f0ff]">
+            <Globe className="h-3.5 w-3.5 animate-spin-slow" />
           </div>
           <div>
             <div className="flex items-center gap-1.5">
@@ -729,176 +542,134 @@ export const HeroPlanetaryGlobe: React.FC<HeroPlanetaryGlobeProps> = ({ target }
               </span>
             </div>
             <div className="text-[10px] font-mono-code text-slate-400">
-              Photorealistic Radiance Globe &bull; AstroPlus Holographic Split
+              3D Planetary Sphere &bull; Laser-Cyan Mesh Split
             </div>
           </div>
         </div>
 
-        {/* View mode toggle pills */}
-        <div className="flex items-center gap-1 bg-[#060a14] p-1 rounded-xl border border-white/[0.08] text-[10px] font-mono-code">
+        {/* View Mode Toggle Pills (Clean 3D Split, Full Texture, Full Mesh) */}
+        <div className="flex items-center gap-1 bg-[#040914]/90 p-1 rounded-xl border border-cyan-500/20 text-[10px] font-mono-code">
           <button
-            onClick={() => {
-              setRenderMode('SPLIT');
-              setSplitOffset(0.5);
-            }}
-            className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
+            id="btn-mode-split"
+            onClick={() => setRenderMode('SPLIT')}
+            className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer font-bold ${
               renderMode === 'SPLIT'
-                ? 'bg-cyan-950/90 text-cyan-300 font-bold border border-cyan-500/40 shadow-sm'
+                ? 'bg-cyan-950/90 text-[#00f0ff] border border-[#00f0ff]/50 shadow-[0_0_10px_rgba(0,240,255,0.3)]'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
-            title="Split Photorealistic Terrain & Wireframe"
+            title="Split 50/50: Left Textured / Right Holographic Wireframe"
           >
             Split 50/50
           </button>
           <button
+            id="btn-mode-texture"
             onClick={() => setRenderMode('TEXTURE')}
-            className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
+            className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer font-bold ${
               renderMode === 'TEXTURE'
-                ? 'bg-cyan-950/90 text-cyan-300 font-bold border border-cyan-500/40 shadow-sm'
+                ? 'bg-cyan-950/90 text-[#00f0ff] border border-[#00f0ff]/50 shadow-[0_0_10px_rgba(0,240,255,0.3)]'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
-            title="Full Photorealistic Atmosphere"
+            title="Full Photorealistic Earth with Atmospheric Clouds"
           >
             Texture
           </button>
           <button
+            id="btn-mode-wireframe"
             onClick={() => setRenderMode('WIREFRAME')}
-            className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
+            className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer font-bold ${
               renderMode === 'WIREFRAME'
-                ? 'bg-cyan-950/90 text-cyan-300 font-bold border border-cyan-500/40 shadow-sm'
+                ? 'bg-cyan-950/90 text-[#00f0ff] border border-[#00f0ff]/50 shadow-[0_0_10px_rgba(0,240,255,0.3)]'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
-            title="Holographic Geodesic Mesh"
+            title="Full Holographic Laser-Cyan Geodesic Mesh"
           >
             Mesh
           </button>
         </div>
       </div>
 
-      {/* Main Interactive 3D Canvas Area */}
-      <div className="relative w-full h-64 sm:h-76 my-1 flex items-center justify-center cursor-grab active:cursor-grabbing select-none overflow-hidden rounded-xl">
-        {/* Luminous Atmospheric Halo framing the 3D sphere */}
-        <div 
-          className="absolute inset-0 pointer-events-none rounded-xl"
-          style={{
-            background: 'radial-gradient(circle at center, rgba(56, 189, 248, 0.22) 0%, rgba(0, 240, 255, 0.10) 30%, transparent 70%)',
-          }}
-        />
-
+      {/* Main Interactive 3D Canvas Area: Dedicated Container for True Aspect Ratio & Spherical Rendering */}
+      <div 
+        ref={canvasContainerRef}
+        className="relative w-full h-64 sm:h-76 my-1 flex items-center justify-center cursor-grab active:cursor-grabbing select-none overflow-hidden rounded-xl"
+      >
         <canvas
           ref={canvasRef}
           className="w-full h-full block relative z-10"
-          onMouseDown={handlePlanetMouseDown}
-          onMouseMove={handlePlanetMouseMove}
-          onMouseUp={handlePlanetMouseUp}
-          onMouseLeave={handlePlanetMouseUp}
-          onTouchStart={handlePlanetTouchStart}
-          onTouchMove={handlePlanetTouchMove}
-          onTouchEnd={handlePlanetTouchEnd}
         />
 
-        {/* Sharp Glowing Vertical Scanline Separator (SPLIT Mode Only) */}
-        {renderMode === 'SPLIT' && (
-          <div
-            className="absolute top-0 bottom-0 pointer-events-none z-20 flex flex-col items-center justify-between"
-            style={{
-              left: `${splitOffset * 100}%`,
-              transform: 'translateX(-50%)',
-            }}
-          >
-            {/* Top Scanline Indicator Badge */}
-            <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#050914]/90 border border-cyan-400 text-[8px] font-mono-code text-cyan-300 shadow-[0_0_12px_rgba(0,240,255,0.6)] tracking-wider uppercase mt-1 pointer-events-auto select-none backdrop-blur-md">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
-              <span>VET // SCAN</span>
-            </div>
-
-            {/* Glowing Laser-Cyan Scanline */}
-            <div className="relative h-full w-[2px] bg-gradient-to-b from-transparent via-cyan-400 to-transparent shadow-[0_0_10px_#00f0ff,0_0_20px_rgba(0,240,255,0.8)]">
-              {/* Sweeping optical flare */}
-              <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-1.5 h-10 bg-white/80 blur-[1px] rounded-full animate-pulse" />
-            </div>
-
-            {/* Center Draggable Grip Handle */}
-            <div 
-              onMouseDown={handleSplitDragStart}
-              onTouchStart={handleSplitDragStart}
-              className="absolute top-1/2 -translate-y-1/2 flex items-center justify-center w-7 h-7 rounded-full bg-[#050914] border-2 border-cyan-400 shadow-[0_0_16px_rgba(0,240,255,0.9)] text-cyan-300 cursor-ew-resize pointer-events-auto hover:scale-110 active:scale-95 transition-transform"
-              title="Drag to adjust Terrain vs Holographic Mesh ratio"
-            >
-              <div className="flex gap-1 items-center justify-center">
-                <div className="w-0.5 h-3 bg-cyan-400 rounded-full" />
-                <div className="w-0.5 h-3 bg-cyan-400 rounded-full" />
-              </div>
-            </div>
-
-            {/* Bottom 50:50 Split Ratio Badge */}
-            <div className="flex items-center px-2 py-0.5 rounded bg-[#050914]/90 border border-cyan-400/70 text-[8px] font-mono-code text-cyan-300 shadow-[0_0_12px_rgba(0,240,255,0.5)] tracking-wider mb-1 pointer-events-auto select-none backdrop-blur-md">
-              <span>{Math.round(splitOffset * 100)} : {Math.round((1 - splitOffset) * 100)}</span>
-            </div>
-          </div>
-        )}
-
-        {/* Ambient Overlay Badges */}
-        <div className="absolute top-2 left-2 flex flex-col gap-1 pointer-events-none text-[10px] font-mono-code z-10">
-          <div className="bg-[#050914]/80 border border-cyan-500/30 px-2 py-0.5 rounded-md text-cyan-300 backdrop-blur-md shadow-sm">
+        {/* Ambient Overlay Telemetry Badges */}
+        <div className="absolute top-2 left-2 flex flex-col gap-1 pointer-events-none text-[10px] font-mono-code z-20">
+          <div className="bg-[#040914]/85 border border-cyan-500/30 px-2 py-0.5 rounded-md text-[#00f0ff] backdrop-blur-md shadow-sm">
             Rp: <strong className="text-white">{target.planetRadius.toFixed(2)} R⊕</strong>
           </div>
-          <div className="bg-[#050914]/80 border border-purple-500/30 px-2 py-0.5 rounded-md text-purple-300 backdrop-blur-md shadow-sm">
+          <div className="bg-[#040914]/85 border border-purple-500/30 px-2 py-0.5 rounded-md text-purple-300 backdrop-blur-md shadow-sm">
             T_eq: <strong className="text-white">{target.equilibriumTemp} K</strong>
           </div>
         </div>
 
-        {/* Rotation State & Control Button Overlay */}
-        <div className="absolute bottom-2 right-2 flex items-center gap-1 z-10">
+        {/* Interactive Controls Overlay (Auto-Spin & Reset View) */}
+        <div className="absolute bottom-2 right-2 flex items-center gap-1.5 z-20">
           <button
+            id="btn-reset-globe-view"
+            onClick={handleResetView}
+            className="flex items-center gap-1 bg-[#040914]/90 hover:bg-[#081226] text-slate-300 hover:text-[#00f0ff] px-2 py-1 rounded-lg border border-cyan-500/20 text-[10px] font-mono-code backdrop-blur-md transition-all cursor-pointer shadow-md"
+            title="Reset Camera View Orientation"
+          >
+            <RotateCcw className="h-3 w-3 text-slate-400" />
+            <span>Reset</span>
+          </button>
+
+          <button
+            id="btn-toggle-spin"
             onClick={() => setIsRotating(!isRotating)}
-            className="flex items-center gap-1.5 bg-[#060a14]/90 hover:bg-[#0b1326] text-slate-300 hover:text-cyan-300 px-2.5 py-1 rounded-lg border border-white/[0.08] text-[10px] font-mono-code backdrop-blur-md transition-all cursor-pointer shadow-md"
-            title="Toggle Slow Axial Auto-Rotation"
+            className="flex items-center gap-1.5 bg-[#040914]/90 hover:bg-[#081226] text-slate-300 hover:text-[#00f0ff] px-2.5 py-1 rounded-lg border border-cyan-500/20 text-[10px] font-mono-code backdrop-blur-md transition-all cursor-pointer shadow-md"
+            title="Toggle Axial Auto-Rotation"
           >
             {isRotating ? (
               <>
-                <Pause className="h-3 w-3 text-cyan-400" />
-                <span>Pause Spin</span>
+                <Pause className="h-3 w-3 text-[#00f0ff]" />
+                <span>Pause</span>
               </>
             ) : (
               <>
                 <Play className="h-3 w-3 text-emerald-400" />
-                <span>Auto Spin</span>
+                <span>Spin</span>
               </>
             )}
           </button>
         </div>
 
-        {/* Floating Instruction Hint on Hover */}
-        <div className="absolute bottom-2 left-2 text-[9px] font-mono-code text-slate-400 bg-[#050914]/85 px-2 py-0.5 rounded border border-white/[0.06] backdrop-blur-md pointer-events-none z-10">
-          Drag to orbit view &bull; Radiance Rayleigh Rim
+        {/* Orbit Interaction Hint */}
+        <div className="absolute bottom-2 left-2 text-[9px] font-mono-code text-slate-400 bg-[#040914]/85 px-2 py-0.5 rounded border border-cyan-500/15 backdrop-blur-md pointer-events-none z-20">
+          Drag to orbit &bull; Scroll to zoom
         </div>
       </div>
 
       {/* Footer Surface & Habitability Telemetry Strip */}
-      <div className="grid grid-cols-3 gap-2 pt-2.5 border-t border-white/[0.08] text-[11px] font-mono-code z-10">
-        <div className="rounded-lg bg-[#070c18] border border-white/[0.04] p-2">
+      <div className="grid grid-cols-3 gap-2 pt-2.5 border-t border-cyan-500/20 text-[11px] font-mono-code z-10">
+        <div className="rounded-xl bg-[#040914]/85 border border-cyan-500/15 p-2">
           <span className="text-slate-400 text-[10px] block">Atmosphere Type</span>
-          <strong className="text-cyan-300 truncate block">
-            {target.planetRadius < 1.4 ? 'Secondary (N2/CO2)' : target.planetRadius < 2.5 ? 'Volatile-Rich Hycean' : 'Hydrogen/Helium Envelope'}
+          <strong className="text-[#00f0ff] truncate block">
+            {target.planetRadius < 1.4 ? 'Secondary (N2/O2)' : target.planetRadius < 2.5 ? 'Volatile-Rich Hycean' : 'Hydrogen/Helium Envelope'}
           </strong>
         </div>
 
-        <div className="rounded-lg bg-[#070c18] border border-white/[0.04] p-2">
+        <div className="rounded-xl bg-[#040914]/85 border border-cyan-500/15 p-2">
           <span className="text-slate-400 text-[10px] block">Insolation Flux</span>
           <strong className="text-slate-200 block">{target.insolationFlux ? target.insolationFlux.toFixed(2) : '1.00'} S⊕</strong>
         </div>
 
-        <div className="rounded-lg bg-[#070c18] border border-white/[0.04] p-2">
+        <div className="rounded-xl bg-[#040914]/85 border border-cyan-500/15 p-2">
           <span className="text-slate-400 text-[10px] block">Hydrosphere Index</span>
           <div className="flex items-center gap-1.5 mt-0.5">
-            <div className="h-1.5 flex-1 bg-slate-800 rounded-full overflow-hidden">
+            <div className="h-1.5 flex-1 bg-slate-900 rounded-full overflow-hidden border border-white/5">
               <div 
-                className="h-full bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-full transition-all duration-500"
-                style={{ width: `${target.liquidWaterIndex || 20}%` }}
+                className="h-full bg-gradient-to-r from-[#00f0ff] to-emerald-400 rounded-full transition-all duration-500 shadow-[0_0_8px_#00f0ff]"
+                style={{ width: `${target.liquidWaterIndex || 71}%` }}
               />
             </div>
-            <span className="text-[10px] font-bold text-emerald-300">{target.liquidWaterIndex || 20}%</span>
+            <span className="text-[10px] font-bold text-emerald-300">{target.liquidWaterIndex || 71}%</span>
           </div>
         </div>
       </div>
