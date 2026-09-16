@@ -146,9 +146,9 @@ export const CommandPaletteModal: React.FC<CommandPaletteModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
-      <div className="relative w-full max-w-2xl rounded-2xl border border-cyan-500/40 bg-[#070d1a] shadow-2xl shadow-cyan-950/80 overflow-hidden font-mono-code">
+      <div className="relative w-full max-w-2xl rounded-2xl cosmic-glass border border-cyan-500/40 shadow-2xl overflow-hidden font-mono-code">
         {/* Search Header */}
-        <div className="flex items-center px-4 py-3.5 border-b border-slate-800 bg-[#091224]/80">
+        <div className="flex items-center px-4 py-3.5 border-b border-white/[0.08] bg-[#091224]/50">
           <Search className="h-5 w-5 text-cyan-400 mr-3" />
           <input
             type="text"

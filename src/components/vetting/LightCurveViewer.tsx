@@ -284,7 +284,7 @@ export const LightCurveViewer: React.FC<LightCurveViewerProps> = ({ target }) =>
   const hoveredPoint = hoverIndex !== null ? data[hoverIndex] : null;
 
   return (
-    <div className="relative rounded-2xl border border-white/[0.08] bg-[#0d121e]/85 p-4 shadow-2xl backdrop-blur-xl">
+    <div className="relative rounded-2xl cosmic-glass p-4">
       {/* Header controls */}
       <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/[0.08]">
         {/* Mode Switcher */}
@@ -299,8 +299,8 @@ export const LightCurveViewer: React.FC<LightCurveViewerProps> = ({ target }) =>
               }}
               className={`px-3 py-1 rounded-xl transition-all cursor-pointer ${
                 activeMode === mode
-                  ? 'border border-cyan-400/80 bg-cyan-950/90 text-cyan-300 font-bold shadow-md shadow-cyan-950/70'
-                  : 'border border-white/[0.06] bg-[#070c18] text-slate-400 hover:text-slate-200 hover:bg-[#0c1426]'
+                  ? 'border border-cyan-400/80 bg-cyan-950/90 text-cyan-300 font-bold shadow-[0_0_15px_rgba(56,189,248,0.3)]'
+                  : 'border border-white/10 bg-[#070c18]/70 text-slate-400 hover:text-slate-200 hover:bg-[#0c1426]'
               }`}
             >
               {mode}
@@ -315,8 +315,8 @@ export const LightCurveViewer: React.FC<LightCurveViewerProps> = ({ target }) =>
             }}
             className={`px-2.5 py-1 rounded-xl border transition-all cursor-pointer ${
               showErrorBars
-                ? 'border-cyan-500/40 bg-cyan-950/60 text-cyan-300'
-                : 'border-white/[0.06] bg-[#070c18] text-slate-400 hover:text-slate-200'
+                ? 'border-cyan-500/40 bg-cyan-950/60 text-cyan-300 shadow-[0_0_10px_rgba(56,189,248,0.2)]'
+                : 'border-white/10 bg-[#070c18]/70 text-slate-400 hover:text-slate-200'
             }`}
             title="Toggle Photometric Error Bars (±1σ)"
           >
@@ -331,8 +331,8 @@ export const LightCurveViewer: React.FC<LightCurveViewerProps> = ({ target }) =>
             }}
             className={`px-2.5 py-1 rounded-xl border transition-all cursor-pointer ${
               showTransitPhases
-                ? 'border-purple-500/40 bg-purple-950/60 text-purple-300'
-                : 'border-white/[0.06] bg-[#070c18] text-slate-400 hover:text-slate-200'
+                ? 'border-purple-500/40 bg-purple-950/60 text-purple-300 shadow-[0_0_10px_rgba(168,85,247,0.2)]'
+                : 'border-white/10 bg-[#070c18]/70 text-slate-400 hover:text-slate-200'
             }`}
             title="Toggle Transit Contacts (t1, t2, t0, t3, t4)"
           >
@@ -538,15 +538,30 @@ export const LightCurveViewer: React.FC<LightCurveViewerProps> = ({ target }) =>
 
           {/* Theoretical Mandel-Agol Transit Model Line Overlay */}
           {activeMode === 'DETRENDED' && (
-            <polyline
-              fill="none"
-              stroke="url(#curveGlow)"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              points={polylinePoints}
-              filter="url(#neonGlow)"
-            />
+            <g className="glow-cyan-neon">
+              {/* Outer neon halo */}
+              <polyline
+                fill="none"
+                stroke="#00f0ff"
+                strokeWidth="4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                points={polylinePoints}
+                opacity="0.35"
+                filter="url(#neonGlow)"
+              />
+              {/* Core radiant laser curve */}
+              <polyline
+                fill="none"
+                stroke="url(#curveGlow)"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                points={polylinePoints}
+                filter="url(#neonGlow)"
+                className="drop-shadow-[0_0_12px_rgba(0,240,255,0.7)]"
+              />
+            </g>
           )}
 
           {/* Scatter dots for photometric observations */}

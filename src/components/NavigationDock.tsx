@@ -5,7 +5,6 @@ import {
   Orbit, 
   Database, 
   BrainCircuit, 
-  Code2, 
   Telescope, 
   Search, 
   Sparkles,
@@ -16,7 +15,6 @@ import { AudioEngine, HapticEngine } from '../utils/feedbackEngine';
 interface NavigationDockProps {
   activeTab: TabType;
   onTabChange: (tab: TabType) => void;
-  onOpenJsonModal: () => void;
   onOpenMissionTimeline: () => void;
   onOpenCommandPalette: () => void;
   nasaStatus: {
@@ -25,15 +23,16 @@ interface NavigationDockProps {
     timestamp: string;
     source: string;
   };
+  className?: string;
 }
 
 export const NavigationDock: React.FC<NavigationDockProps> = ({
   activeTab,
   onTabChange,
-  onOpenJsonModal,
   onOpenMissionTimeline,
   onOpenCommandPalette,
   nasaStatus,
+  className = '',
 }) => {
   const navItems = [
     {
@@ -69,7 +68,7 @@ export const NavigationDock: React.FC<NavigationDockProps> = ({
   return (
     <aside 
       id="left-navigation-dock"
-      className="fixed left-0 top-0 bottom-0 w-16 sm:w-20 md:w-64 z-40 flex flex-col justify-between border-r border-white/[0.08] bg-[#090d18]/85 p-3 backdrop-blur-2xl transition-all duration-300 select-none shadow-2xl"
+      className={`fixed left-0 top-0 bottom-0 w-16 sm:w-20 md:w-64 z-40 flex flex-col justify-between cosmic-glass p-3 transition-all duration-300 select-none ${className}`}
     >
       {/* Top OS Brand Header */}
       <div>
@@ -109,8 +108,8 @@ export const NavigationDock: React.FC<NavigationDockProps> = ({
                 }}
                 className={`w-full group relative flex items-center gap-3 px-2.5 py-3 rounded-2xl border transition-all cursor-pointer ${
                   isActive
-                    ? 'border-cyan-400/60 bg-gradient-to-r from-cyan-950/80 to-[#0e1933] text-cyan-300 shadow-lg shadow-cyan-950/60 font-bold'
-                    : 'border-transparent text-slate-400 hover:text-slate-100 hover:bg-white/[0.04] hover:border-white/[0.06]'
+                    ? 'border-cyan-400/80 bg-cyan-950/90 text-cyan-300 shadow-[0_0_15px_rgba(56,189,248,0.3)] font-bold'
+                    : 'border-transparent text-slate-400 hover:text-slate-100 hover:bg-white/[0.06] hover:border-white/[0.08]'
                 }`}
                 title={item.label}
               >
@@ -138,30 +137,6 @@ export const NavigationDock: React.FC<NavigationDockProps> = ({
               </button>
             );
           })}
-
-          {/* Backend JSON Engine Trigger Button */}
-          <button
-            id="dock-nav-json-engine"
-            onClick={() => {
-              AudioEngine.playClick();
-              HapticEngine.lightTap();
-              onOpenJsonModal();
-            }}
-            className="w-full group flex items-center gap-3 px-2.5 py-3 rounded-2xl border border-transparent text-slate-400 hover:text-cyan-300 hover:bg-white/[0.04] hover:border-white/[0.06] transition-all cursor-pointer"
-            title="Backend JSON Engine (Astrophysics Vetting Response Schema)"
-          >
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-white/[0.03] text-slate-400 group-hover:text-cyan-300 group-hover:bg-cyan-950/40">
-              <Code2 className="h-4 w-4" />
-            </div>
-            <div className="hidden md:flex flex-col text-left truncate">
-              <span className="text-xs tracking-wide text-slate-300 group-hover:text-cyan-300 font-bold">
-                Backend JSON Engine
-              </span>
-              <span className="text-[10px] text-slate-400 font-sans">
-                Strict Schema &amp; NASA Ames TAP
-              </span>
-            </div>
-          </button>
         </nav>
       </div>
 

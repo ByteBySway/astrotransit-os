@@ -17,6 +17,63 @@
   font-family: 'Rajdhani', sans-serif;
 }
 
+.font-prata {
+  font-family: 'Prata', Georgia, serif;
+}
+
+.font-hanken {
+  font-family: 'Hanken Grotesk', system-ui, -apple-system, sans-serif;
+}
+
+.font-poppins {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Authentic Cosmic Glassmorphism */
+.cosmic-glass {
+  background: rgba(8, 18, 38, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.cosmic-glass-active {
+  background: rgba(12, 28, 56, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(56, 189, 248, 0.5);
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.3), 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.cosmic-glass-subtle {
+  background: rgba(6, 14, 30, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.25);
+}
+
+.glow-cyan-neon {
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+}
+
+/* Unified Astronomy-Grade Glassmorphism Panels */
+.glass-panel {
+  background: rgba(8, 18, 38, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-panel-subtle {
+  background: rgba(8, 18, 38, 0.50);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
 /* Sci-fi grid backgrounds */
 .bg-astro-grid {
   background-size: 24px 24px;

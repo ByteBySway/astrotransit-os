@@ -740,7 +740,7 @@ export const OrbitSimulator: React.FC<OrbitSimulatorProps> = ({
 
       {/* Keplerian Orbital Mechanics Sliders Control Panel */}
       {showKeplerSliders && (
-        <div className="rounded-2xl border border-cyan-500/30 bg-[#0d121e]/90 p-3 shadow-xl backdrop-blur-xl font-mono-code text-[11px] animate-fadeIn">
+        <div className="rounded-2xl cosmic-glass p-4 font-mono-code text-[11px] animate-fadeIn">
           <div className="flex flex-wrap items-center justify-between pb-1.5 mb-2 border-b border-white/[0.08] gap-2">
             <span className="text-cyan-300 font-bold flex items-center gap-1.5 text-xs">
               <Sliders className="h-3.5 w-3.5 text-cyan-400" />
@@ -837,7 +837,7 @@ export const OrbitSimulator: React.FC<OrbitSimulatorProps> = ({
 
       {/* Main Interactive 3D Orbit Canvas encasing Glassmorphic Viewport Container */}
       <div
-        className="relative h-[420px] sm:h-[480px] w-full rounded-2xl border border-white/10 bg-[#0d121e]/85 backdrop-blur-xl overflow-hidden shadow-2xl cursor-grab active:cursor-grabbing select-none"
+        className="relative h-[420px] sm:h-[480px] w-full rounded-2xl cosmic-glass overflow-hidden cursor-grab active:cursor-grabbing select-none"
         onMouseDown={(e) => {
           setIsDragging(true);
           dragStartRef.current = { x: e.clientX, y: e.clientY };
@@ -858,7 +858,7 @@ export const OrbitSimulator: React.FC<OrbitSimulatorProps> = ({
         />
 
         {/* Orbit Overlay Telemetry (Top-Left Compact Dock) */}
-        <div className="absolute top-3 left-3 rounded-xl border border-white/10 bg-[#070f20]/90 p-2.5 font-mono-code text-[11px] text-slate-300 backdrop-blur-xl shadow-xl max-w-[220px]">
+        <div className="absolute top-3 left-3 rounded-xl cosmic-glass p-2.5 font-mono-code text-[11px] text-slate-300 max-w-[220px]">
           <div className="text-cyan-400 font-bold mb-1 flex items-center gap-1.5 text-xs truncate">
             <Compass className="h-3.5 w-3.5 text-cyan-400 shrink-0" />
             <span className="truncate">{selectedTarget.name} Primary</span>
@@ -871,7 +871,7 @@ export const OrbitSimulator: React.FC<OrbitSimulatorProps> = ({
         </div>
 
         {/* Orbital Mechanics HUD on Top-Right */}
-        <div className="absolute top-3 right-3 rounded-xl border border-white/10 bg-[#070f20]/90 p-2.5 font-mono-code text-[11px] text-slate-300 backdrop-blur-xl shadow-xl text-right">
+        <div className="absolute top-3 right-3 rounded-xl cosmic-glass p-2.5 font-mono-code text-[11px] text-slate-300 text-right">
           <div className="text-cyan-400 font-bold mb-0.5 flex items-center justify-end gap-1 text-xs">
             <Gauge className="h-3.5 w-3.5 text-cyan-400" />
             <span>Velocity</span>
@@ -885,7 +885,7 @@ export const OrbitSimulator: React.FC<OrbitSimulatorProps> = ({
 
         {/* Clickable 3D Planet Info Modal / Card (Raycasting Result) */}
         {activePlanetCard && (
-          <div className="absolute bottom-10 left-3 sm:left-4 rounded-xl border border-cyan-400/50 bg-[#080e1e]/95 p-3 font-mono-code text-[11px] text-slate-200 backdrop-blur-2xl shadow-2xl z-30 max-w-xs animate-fadeIn">
+          <div className="absolute bottom-10 left-3 sm:left-4 rounded-xl cosmic-glass p-3 font-mono-code text-[11px] text-slate-200 z-30 max-w-xs animate-fadeIn">
             <div className="flex items-center justify-between pb-1.5 mb-1.5 border-b border-white/[0.08]">
               <div className="flex items-center gap-1.5 truncate">
                 <span 
@@ -971,9 +971,9 @@ export const OrbitSimulator: React.FC<OrbitSimulatorProps> = ({
       {/* Lower 3 Cards: Mass-Radius, Insolation & LWI, TTV */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* 1. Mass-Radius Composition Card */}
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0d121e]/85 p-4 shadow-xl flex flex-col justify-between backdrop-blur-xl">
+        <div className="rounded-2xl cosmic-glass p-4 flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between pb-2 border-b border-slate-800/80 font-mono-code text-xs">
+            <div className="flex items-center justify-between pb-2 border-b border-white/[0.08] font-mono-code text-xs">
               <span className="text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                 <Sparkles className="h-3.5 w-3.5 text-cyan-400" />
                 Mass-Radius Composition
@@ -1018,7 +1018,7 @@ export const OrbitSimulator: React.FC<OrbitSimulatorProps> = ({
                   fill="#00f0ff"
                   stroke="#ffffff"
                   strokeWidth="2"
-                  className="animate-pulse"
+                  className="animate-pulse drop-shadow-[0_0_8px_rgba(0,240,255,0.8)]"
                 />
 
                 {/* Target Label */}
@@ -1039,16 +1039,16 @@ export const OrbitSimulator: React.FC<OrbitSimulatorProps> = ({
             </div>
           </div>
 
-          <div className="text-[11px] font-mono-code text-slate-400 pt-1 border-t border-slate-800/60 flex justify-between">
+          <div className="text-[11px] font-mono-code text-slate-400 pt-2 border-t border-white/[0.08] flex justify-between">
             <span>Radius: <strong className="text-cyan-400">{selectedTarget.planetRadius} R⊕</strong></span>
             <span>Mass: <strong className="text-slate-200">{selectedTarget.planetMass || 2.8} M⊕</strong></span>
           </div>
         </div>
 
         {/* 2. Insolation & Liquid Water Index Card */}
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0d121e]/85 p-4 shadow-xl flex flex-col justify-between backdrop-blur-xl">
+        <div className="rounded-2xl cosmic-glass p-4 flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between pb-2 border-b border-slate-800/80 font-mono-code text-xs">
+            <div className="flex items-center justify-between pb-2 border-b border-white/[0.08] font-mono-code text-xs">
               <span className="text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                 <Droplet className="h-3.5 w-3.5 text-cyan-400" />
                 Insolation &amp; LWI
@@ -1056,14 +1056,14 @@ export const OrbitSimulator: React.FC<OrbitSimulatorProps> = ({
             </div>
 
             <div className="my-3 grid grid-cols-2 gap-3 font-mono-code">
-              <div className="rounded-xl border border-slate-800 bg-[#060b16] p-2.5">
+              <div className="rounded-xl border border-white/10 bg-[#060b16]/70 p-2.5">
                 <div className="text-[10px] text-slate-400 uppercase">Incident Flux</div>
                 <div className="text-lg font-bold text-cyan-400 glow-cyan">
                   {selectedTarget.insolationFlux.toFixed(2)} <span className="text-xs text-slate-400">S☉</span>
                 </div>
               </div>
 
-              <div className="rounded-xl border border-slate-800 bg-[#060b16] p-2.5">
+              <div className="rounded-xl border border-white/10 bg-[#060b16]/70 p-2.5">
                 <div className="text-[10px] text-slate-400 uppercase">Eq Temp</div>
                 <div className="text-lg font-bold text-cyan-400 glow-cyan">
                   {selectedTarget.equilibriumTemp} <span className="text-xs text-slate-400">K</span>
@@ -1087,16 +1087,16 @@ export const OrbitSimulator: React.FC<OrbitSimulatorProps> = ({
           </div>
 
           {/* Greenhouse Alert notice */}
-          <div className="rounded-xl border border-amber-950/60 bg-amber-950/20 p-2 text-[11px] font-mono-code text-amber-200 flex items-start gap-1.5">
+          <div className="rounded-xl border border-amber-500/30 bg-amber-950/30 p-2.5 text-[11px] font-mono-code text-amber-200 flex items-start gap-1.5 backdrop-blur-md">
             <ShieldAlert className="h-3.5 w-3.5 text-amber-400 shrink-0 mt-0.5" />
             <span>{selectedTarget.greenhouseAlert || 'Moderate atmospheric stability forecast.'}</span>
           </div>
         </div>
 
         {/* 3. Transit Timing Variation (TTV) Card */}
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0d121e]/85 p-4 shadow-xl flex flex-col justify-between backdrop-blur-xl">
+        <div className="rounded-2xl cosmic-glass p-4 flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between pb-2 border-b border-slate-800/80 font-mono-code text-xs">
+            <div className="flex items-center justify-between pb-2 border-b border-white/[0.08] font-mono-code text-xs">
               <span className="text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                 <Activity className="h-3.5 w-3.5 text-cyan-400" />
                 Transit Timing Variation
@@ -1121,8 +1121,9 @@ export const OrbitSimulator: React.FC<OrbitSimulatorProps> = ({
                   d="M 35,80 Q 90,15 145,80 T 255,80"
                   fill="none"
                   stroke="#00f0ff"
-                  strokeWidth="2"
+                  strokeWidth="2.2"
                   strokeLinecap="round"
+                  className="drop-shadow-[0_0_8px_rgba(0,240,255,0.7)]"
                 />
 
                 {/* TTV Observed Points with Error Bars */}

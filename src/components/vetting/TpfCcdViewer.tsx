@@ -31,14 +31,14 @@ export const TpfCcdViewer: React.FC<TpfCcdViewerProps> = ({ target }) => {
   };
 
   return (
-    <div className="relative rounded-xl border border-cyan-950/80 bg-[#090f1d] p-3 shadow-md flex flex-col justify-between">
-      <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
+    <div className="relative rounded-2xl cosmic-glass p-4 flex flex-col justify-between">
+      <div className="flex items-center justify-between pb-2 border-b border-white/[0.08]">
         <div className="flex items-center gap-1.5 text-xs font-mono-code text-cyan-400 font-semibold">
           <Grid className="h-3.5 w-3.5" />
           <span>TPF 5x5 CCD</span>
         </div>
         <div
-          className={`flex items-center gap-1 text-[10px] font-mono-code px-2 py-0.5 rounded border ${
+          className={`flex items-center gap-1 text-[10px] font-mono-code px-2 py-0.5 rounded-full border ${
             isAlert
               ? 'border-amber-500/50 bg-amber-950/30 text-amber-300'
               : 'border-cyan-500/40 bg-cyan-950/30 text-cyan-300'
@@ -51,7 +51,7 @@ export const TpfCcdViewer: React.FC<TpfCcdViewerProps> = ({ target }) => {
 
       {/* 5x5 Grid Container */}
       <div className="my-auto py-2 flex items-center justify-center">
-        <div className="relative grid grid-cols-5 gap-1 p-2 rounded-lg border border-slate-800 bg-[#060b16]">
+        <div className="relative grid grid-cols-5 gap-1 p-2 rounded-xl border border-white/10 bg-[#060b16]/80 backdrop-blur-md">
           {matrix.map((row, y) =>
             row.map((val, x) => (
               <div
@@ -82,7 +82,7 @@ export const TpfCcdViewer: React.FC<TpfCcdViewerProps> = ({ target }) => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between text-[10px] font-mono-code text-slate-400 pt-1 border-t border-slate-800/60">
+      <div className="flex items-center justify-between text-[10px] font-mono-code text-slate-400 pt-2 border-t border-white/[0.08]">
         <span>Pixel Scale: 3.98&quot; / px</span>
         <span className={isAlert ? 'text-amber-400' : 'text-emerald-400'}>
           {isAlert ? 'Marginal blend risk' : 'Direct host centering'}

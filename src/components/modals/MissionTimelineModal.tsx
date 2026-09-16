@@ -61,7 +61,7 @@ export const MissionTimelineModal: React.FC<MissionTimelineModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-2xl animate-fadeIn">
       {/* Outer Modal Container */}
-      <div className="relative w-full max-w-5xl rounded-3xl border border-cyan-500/30 bg-[#070b16]/95 p-6 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="relative w-full max-w-5xl rounded-3xl border border-cyan-500/30 cosmic-glass p-6 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         {/* Background Ambient Cosmic Flares */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />

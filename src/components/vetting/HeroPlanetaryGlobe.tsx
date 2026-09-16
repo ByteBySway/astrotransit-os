@@ -411,7 +411,7 @@ export const HeroPlanetaryGlobe: React.FC<HeroPlanetaryGlobeProps> = ({ target }
   return (
     <div 
       ref={containerRef}
-      className="relative rounded-2xl border border-white/[0.08] bg-[#0d121e]/85 p-4 shadow-2xl backdrop-blur-xl flex flex-col justify-between overflow-hidden group"
+      className="relative rounded-2xl cosmic-glass p-4 flex flex-col justify-between overflow-hidden group"
     >
       {/* Top Header & Mode Controls */}
       <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-white/[0.08] z-10">

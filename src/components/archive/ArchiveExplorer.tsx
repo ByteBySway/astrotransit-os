@@ -146,14 +146,14 @@ export const ArchiveExplorer: React.FC<ArchiveExplorerProps> = ({
 
         {/* Uplink status & export */}
         <div className="flex items-center gap-3 font-mono-code text-xs">
-          <div className="flex items-center gap-2 rounded-lg border border-cyan-950/80 bg-[#090f1d] px-3 py-1.5 text-slate-300">
+          <div className="flex items-center gap-2 rounded-xl cosmic-glass px-3 py-1.5 text-slate-300">
             <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
             <span>Connection: STScI Uplink Active</span>
           </div>
 
           <button
             onClick={handleExportCSV}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-cyan-500/40 bg-cyan-950/60 hover:bg-cyan-900/60 text-cyan-300 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-cyan-500/40 bg-cyan-950/70 hover:bg-cyan-900/80 text-cyan-300 transition-colors shadow-lg cursor-pointer"
           >
             <Download className="h-3.5 w-3.5" />
             <span>Export CSV ({selectedRowIds.length || sortedList.length})</span>
@@ -162,7 +162,7 @@ export const ArchiveExplorer: React.FC<ArchiveExplorerProps> = ({
       </div>
 
       {/* ADQL Query Console matching screenshot 3 */}
-      <div className="rounded-xl border border-cyan-950/80 bg-[#090f1d] p-4 shadow-lg">
+      <div className="rounded-2xl cosmic-glass p-4 shadow-xl">
         <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-800/80 text-xs font-mono-code">
           <span className="text-cyan-400 font-semibold flex items-center gap-1.5">
             <Database className="h-3.5 w-3.5" />
@@ -236,9 +236,9 @@ export const ArchiveExplorer: React.FC<ArchiveExplorerProps> = ({
       </div>
 
       {/* Main Filter & Interactive Data Table */}
-      <div className="rounded-xl border border-cyan-950/80 bg-[#090f1d] overflow-hidden shadow-lg">
+      <div className="rounded-2xl cosmic-glass overflow-hidden shadow-2xl">
         {/* Table controls */}
-        <div className="p-3 border-b border-slate-800/80 flex flex-wrap items-center justify-between gap-3 text-xs font-mono-code">
+        <div className="p-3 border-b border-white/[0.08] flex flex-wrap items-center justify-between gap-3 text-xs font-mono-code">
           <div className="flex items-center gap-2">
             <div className="relative">
               <Search className="absolute left-2.5 top-2 h-3.5 w-3.5 text-slate-400" />

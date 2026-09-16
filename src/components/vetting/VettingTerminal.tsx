@@ -33,7 +33,7 @@ interface VettingTerminalProps {
   onSelectTarget: (target: TargetPlanet) => void;
   allTargets: TargetPlanet[];
   activeCategory?: PlanetClassificationType;
-  onOpenJsonModal: () => void;
+  onOpenJsonModal?: () => void;
   onRunVettingApi: (target: TargetPlanet) => Promise<AstrophysicsVettingResponse | null>;
 }
 
@@ -158,7 +158,7 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
   return (
     <div className="space-y-4 pb-12 animate-fadeIn">
       {/* Title Bar & Target Switcher Pills */}
-      <div className="rounded-2xl border border-white/[0.08] bg-[#0d121e]/80 p-4 shadow-2xl backdrop-blur-xl flex flex-wrap items-center justify-between gap-4">
+      <div className="rounded-2xl cosmic-glass p-4 flex flex-wrap items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="font-display text-xl sm:text-2xl font-bold tracking-wide text-white uppercase flex items-center gap-2">
@@ -184,8 +184,8 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
                 onClick={() => onSelectTarget(target)}
                 className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono-code transition-all cursor-pointer ${
                   isSel
-                    ? 'border border-cyan-400 bg-cyan-950/90 text-cyan-300 shadow-md shadow-cyan-950/80 font-bold'
-                    : 'border border-white/[0.08] bg-[#070b16] text-slate-400 hover:text-slate-200 hover:border-white/[0.2]'
+                    ? 'border border-cyan-400 bg-cyan-950/90 text-cyan-300 shadow-[0_0_15px_rgba(56,189,248,0.3)] font-bold'
+                    : 'border border-white/10 bg-[#070b16]/70 text-slate-400 hover:text-slate-200 hover:border-white/20'
                 }`}
               >
                 <Sparkles className="h-3 w-3 text-cyan-400" />
@@ -198,8 +198,8 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
             onClick={() => setShowTelemetryTuner(!showTelemetryTuner)}
             className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono-code border transition-all cursor-pointer ${
               showTelemetryTuner
-                ? 'border-cyan-400 bg-cyan-950/90 text-cyan-300 font-bold'
-                : 'border-white/[0.08] bg-[#070b16] text-slate-400 hover:text-slate-200'
+                ? 'border-cyan-400 bg-cyan-950/90 text-cyan-300 font-bold shadow-[0_0_15px_rgba(56,189,248,0.3)]'
+                : 'border-white/10 bg-[#070b16]/70 text-slate-400 hover:text-slate-200'
             }`}
           >
             <Sliders className="h-3.5 w-3.5 text-cyan-400" />
@@ -222,7 +222,7 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
 
       {/* Telemetry Tuner Drawer */}
       {showTelemetryTuner && (
-        <div className="rounded-2xl border border-cyan-500/30 bg-[#0a0f1f]/95 p-4 shadow-2xl font-mono-code text-xs backdrop-blur-xl animate-fadeIn">
+        <div className="rounded-2xl cosmic-glass p-4 font-mono-code text-xs animate-fadeIn">
           <div className="flex items-center justify-between pb-2 mb-3 border-b border-white/[0.08]">
             <span className="text-cyan-300 font-bold flex items-center gap-2">
               <Sliders className="h-4 w-4 text-cyan-400" />
@@ -328,7 +328,7 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
       {/* Luxury Telemetry Metric Cards (AstroPlus Obsidian Glass) */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {/* Orbital Period */}
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0d121e]/80 p-4 shadow-xl backdrop-blur-xl flex flex-col justify-between">
+        <div className="rounded-2xl cosmic-glass p-4 flex flex-col justify-between">
           <div className="text-[11px] font-mono-code text-slate-400 uppercase tracking-wider">
             Orbital Period
           </div>
@@ -341,7 +341,7 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
         </div>
 
         {/* Transit Depth */}
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0d121e]/80 p-4 shadow-xl backdrop-blur-xl flex flex-col justify-between">
+        <div className="rounded-2xl cosmic-glass p-4 flex flex-col justify-between">
           <div className="text-[11px] font-mono-code text-slate-400 uppercase tracking-wider">
             Transit Depth
           </div>
@@ -354,7 +354,7 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
         </div>
 
         {/* Planet Radius */}
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0d121e]/80 p-4 shadow-xl backdrop-blur-xl flex flex-col justify-between">
+        <div className="rounded-2xl cosmic-glass p-4 flex flex-col justify-between">
           <div className="flex items-center justify-between gap-1 text-[11px] font-mono-code text-slate-400 uppercase tracking-wider">
             <span>Planet Radius</span>
             <span
@@ -373,7 +373,7 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
         </div>
 
         {/* Equilibrium Temp */}
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0d121e]/80 p-4 shadow-xl backdrop-blur-xl flex flex-col justify-between">
+        <div className="rounded-2xl cosmic-glass p-4 flex flex-col justify-between">
           <div className="flex items-center justify-between text-[11px] font-mono-code text-slate-400 uppercase tracking-wider">
             <span>Equilibrium Temp</span>
             <span className="h-2 w-2 rounded-full bg-cyan-400 animate-pulse" />
@@ -406,7 +406,7 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
         {/* Right 1 Col: Triple Concentric Radial Ring Dial, False-Positive Matrix & Scientific Verdict */}
         <div className="space-y-4">
           {/* Concentric 3-Ring Radial Dial Card */}
-          <div className="rounded-2xl border border-white/[0.08] bg-[#0d121e]/85 p-4 shadow-2xl backdrop-blur-xl flex flex-col justify-between">
+          <div className="rounded-2xl cosmic-glass p-4 flex flex-col justify-between">
             <div className="flex items-center justify-between pb-2 border-b border-white/[0.08]">
               <span className="font-mono-code text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                 <Cpu className="h-3.5 w-3.5 text-cyan-400" />
@@ -487,7 +487,7 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
           </div>
 
           {/* False-Positive Matrix with Strict NASA Ames Thresholds */}
-          <div className="rounded-2xl border border-white/[0.08] bg-[#0d121e]/85 p-4 shadow-2xl backdrop-blur-xl space-y-2.5">
+          <div className="rounded-2xl cosmic-glass p-4 space-y-2.5">
             <div className="font-mono-code text-xs font-bold text-slate-300 uppercase tracking-wider pb-2 border-b border-white/[0.08] flex items-center justify-between">
               <span>False-Positive Matrix</span>
               <span className="text-[10px] text-cyan-400 font-normal">NASA Ames Protocols</span>
@@ -495,7 +495,7 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
 
             <div className="space-y-2 font-mono-code text-xs">
               {/* Odd/Even Ratio */}
-              <div className="flex items-center justify-between p-2.5 rounded-xl border border-white/[0.04] bg-[#060b16]">
+              <div className="flex items-center justify-between p-2.5 rounded-xl border border-white/[0.04] bg-[#060b16]/70">
                 <div>
                   <div className="text-slate-300 font-medium">Odd/Even Depth Test</div>
                   <div className="text-[10px] text-slate-500">Ratio: {customParams.oddEvenRatio.toFixed(3)} (0.95 - 1.05)</div>
@@ -512,7 +512,7 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
               </div>
 
               {/* Secondary Eclipse */}
-              <div className="flex items-center justify-between p-2.5 rounded-xl border border-white/[0.04] bg-[#060b16]">
+              <div className="flex items-center justify-between p-2.5 rounded-xl border border-white/[0.04] bg-[#060b16]/70">
                 <div>
                   <div className="text-slate-300 font-medium">Secondary Eclipse</div>
                   <div className="text-[10px] text-slate-500">Depth: {customParams.secondaryEclipseDepth} ppm (&lt; 15 ppm)</div>
@@ -529,7 +529,7 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
               </div>
 
               {/* Centroid Astrometric Offset */}
-              <div className="flex items-center justify-between p-2.5 rounded-xl border border-white/[0.04] bg-[#060b16]">
+              <div className="flex items-center justify-between p-2.5 rounded-xl border border-white/[0.04] bg-[#060b16]/70">
                 <div>
                   <div className="text-slate-300 font-medium">Centroid Astrometry</div>
                   <div className="text-[10px] text-slate-500">Offset: {customParams.centroidOffset.toFixed(2)}&quot; (&lt; 0.25&quot;)</div>
@@ -546,7 +546,7 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
               </div>
 
               {/* Transit Signal-to-Noise Ratio (SNR) */}
-              <div className="flex items-center justify-between p-2.5 rounded-xl border border-white/[0.04] bg-[#060b16]">
+              <div className="flex items-center justify-between p-2.5 rounded-xl border border-white/[0.04] bg-[#060b16]/70">
                 <div>
                   <div className="text-slate-300 font-medium">Photometric SNR</div>
                   <div className="text-[10px] text-slate-500">MES / SNR: {selectedTarget.snr || '34.2'} (&gt; 7.1)</div>
@@ -567,7 +567,7 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
       </div>
 
       {/* Bottom Command Bar & Stellar Host Telemetry Strip */}
-      <div className="rounded-2xl border border-white/[0.08] bg-[#0d121e]/85 p-4 shadow-2xl backdrop-blur-xl flex flex-wrap items-center justify-between gap-4">
+      <div className="rounded-2xl cosmic-glass p-4 flex flex-wrap items-center justify-between gap-4">
         {/* Left Telemetry Status */}
         <div className="flex items-center gap-3">
           <div className="flex items-center rounded-xl border border-white/[0.08] bg-[#060a14] p-1 font-mono-code text-xs">

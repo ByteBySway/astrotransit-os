@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { TabType, TargetPlanet, PlanetClassificationType, getPlanetaryClassification } from '../types';
+import { BaselinePlanetKey } from '../data/baselineTargets';
 import { 
   Search, 
   Globe, 
@@ -25,7 +26,7 @@ interface HeaderProps {
   allTargets: TargetPlanet[];
   activeCategory: PlanetClassificationType;
   onCategoryChange: (cat: PlanetClassificationType) => void;
-  onOpenJsonModal: () => void;
+  onOpenJsonModal?: () => void;
   onOpenMissionTimeline?: () => void;
   nasaStatus?: {
     status: 'SYNCED' | 'CACHED' | 'FALLBACK' | 'CONNECTING';
@@ -34,6 +35,8 @@ interface HeaderProps {
     source: string;
   };
   onSearchNasaTap?: (query: string) => void;
+  selectedBaseline?: BaselinePlanetKey;
+  onSelectBaseline?: (planet: BaselinePlanetKey) => void;
 }
 
 const CATEGORY_OPTIONS: { type: PlanetClassificationType; label: string; range: string; badge: string; color: string }[] = [
@@ -61,6 +64,8 @@ export const Header: React.FC<HeaderProps> = ({
     source: 'LIVE_NASA_TAP'
   },
   onSearchNasaTap,
+  selectedBaseline = 'earth',
+  onSelectBaseline,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -114,7 +119,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="w-full">
-      <div className="rounded-2xl border border-white/[0.08] bg-[#0d121e]/80 p-3 sm:p-3.5 shadow-2xl backdrop-blur-xl flex flex-wrap items-center justify-between gap-3">
+      <div className="rounded-2xl cosmic-glass p-3 sm:p-3.5 flex flex-wrap items-center justify-between gap-3">
         {/* Left: Active Target Breadcrumb & Telemetry Anchor */}
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
@@ -141,8 +146,45 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
           </div>
 
+          {/* Top Baseline Standard Pills: Earth / Venus / Mars */}
+          <div className="flex items-center gap-1 p-1 rounded-xl border border-white/10 bg-[#060b16]/70 backdrop-blur-md text-xs font-mono-code">
+            <span className="text-[10px] text-slate-400 px-1 uppercase tracking-wider hidden lg:inline">Baseline:</span>
+            {(['earth', 'venus', 'mars'] as BaselinePlanetKey[]).map((planetKey) => {
+              const isSelected = selectedBaseline === planetKey;
+              const label = planetKey === 'earth' ? 'Earth' : planetKey === 'venus' ? 'Venus' : 'Mars';
+              return (
+                <button
+                  key={planetKey}
+                  id={`header-baseline-pill-${planetKey}`}
+                  onClick={() => {
+                    AudioEngine.playClick();
+                    HapticEngine.selectionTick();
+                    if (onSelectBaseline) onSelectBaseline(planetKey);
+                  }}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    isSelected
+                      ? 'border border-cyan-400/80 bg-cyan-950/90 text-cyan-300 font-bold shadow-[0_0_15px_rgba(56,189,248,0.3)]'
+                      : 'border border-transparent text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                  }`}
+                  title={`Switch baseline reference and video cross-fade to ${label}`}
+                >
+                  <span
+                    className={`h-1.5 w-1.5 rounded-full ${
+                      planetKey === 'earth'
+                        ? 'bg-emerald-400'
+                        : planetKey === 'venus'
+                        ? 'bg-amber-400'
+                        : 'bg-rose-400'
+                    } ${isSelected ? 'animate-pulse' : ''}`}
+                  />
+                  <span>{label}</span>
+                </button>
+              );
+            })}
+          </div>
+
           {/* NASA TAP Live Network Status Indicator */}
-          <div className="hidden xl:flex items-center gap-2 pl-3 border-l border-white/[0.08] text-[11px] font-mono-code">
+          <div className="hidden 2xl:flex items-center gap-2 pl-3 border-l border-white/[0.08] text-[11px] font-mono-code">
             <span
               className={`flex h-2 w-2 rounded-full ${
                 nasaStatus.status === 'SYNCED'
@@ -245,7 +287,7 @@ export const Header: React.FC<HeaderProps> = ({
                   className="fixed inset-0 z-20"
                   onClick={() => setIsCategoryDropdownOpen(false)}
                 />
-                <div className="absolute right-0 mt-2 z-30 w-72 rounded-2xl border border-white/[0.1] bg-[#070b16]/98 p-2.5 shadow-2xl font-mono-code text-xs backdrop-blur-2xl">
+                <div className="absolute right-0 mt-2 z-30 w-72 rounded-2xl cosmic-glass bg-[#081226]/90 p-2.5 shadow-2xl font-mono-code text-xs">
                   <div className="px-2 py-1.5 text-[10px] text-slate-400 uppercase tracking-wider border-b border-white/[0.08] mb-1 flex items-center justify-between">
                     <span className="flex items-center gap-1.5">
                       <Filter className="h-3 w-3 text-cyan-400" />
@@ -348,7 +390,7 @@ export const Header: React.FC<HeaderProps> = ({
                   className="fixed inset-0 z-20"
                   onClick={() => setIsSearchOpen(false)}
                 />
-                <div className="absolute right-0 mt-2 z-30 w-80 sm:w-96 max-h-96 overflow-y-auto rounded-2xl border border-white/[0.1] bg-[#070b16]/98 p-2.5 shadow-2xl font-mono-code text-xs backdrop-blur-2xl">
+                <div className="absolute right-0 mt-2 z-30 w-80 sm:w-96 max-h-96 overflow-y-auto rounded-2xl cosmic-glass bg-[#081226]/90 p-2.5 shadow-2xl font-mono-code text-xs">
                   <div className="flex items-center justify-between px-2 py-1.5 text-[10px] text-slate-400 uppercase tracking-wider border-b border-white/[0.08] mb-1">
                     <span className="flex items-center gap-1">
                       <Sparkles className="h-3 w-3 text-cyan-400" />

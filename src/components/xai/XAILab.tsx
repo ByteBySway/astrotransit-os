@@ -62,17 +62,17 @@ export const XAILab: React.FC<XAILabProps> = ({ selectedTarget }) => {
 
         {/* 3 Top Metrics matching screenshot 2 */}
         <div className="flex flex-wrap items-center gap-3 font-mono-code text-xs">
-          <div className="rounded-xl border border-cyan-950/80 bg-[#090f1d] px-3.5 py-2">
+          <div className="rounded-xl cosmic-glass px-3.5 py-2">
             <span className="text-slate-400 text-[10px] uppercase block">Symmetry Index</span>
             <span className="text-cyan-400 font-bold text-sm glow-cyan">0.984 ↑</span>
           </div>
 
-          <div className="rounded-xl border border-cyan-950/80 bg-[#090f1d] px-3.5 py-2">
+          <div className="rounded-xl cosmic-glass px-3.5 py-2">
             <span className="text-slate-400 text-[10px] uppercase block">Importance Peak</span>
             <span className="text-slate-200 font-bold text-sm">T-04:22:11</span>
           </div>
 
-          <div className="rounded-xl border border-cyan-950/80 bg-[#090f1d] px-3.5 py-2">
+          <div className="rounded-xl cosmic-glass px-3.5 py-2">
             <span className="text-slate-400 text-[10px] uppercase block">Uncertainty</span>
             <span className="text-cyan-300 font-bold text-sm">±0.018</span>
           </div>
@@ -80,8 +80,8 @@ export const XAILab: React.FC<XAILabProps> = ({ selectedTarget }) => {
       </div>
 
       {/* Main Integrated Gradients Attention Plot matching screenshot 2 */}
-      <div className="rounded-xl border border-cyan-950/80 bg-[#090f1d] p-4 shadow-lg">
-        <div className="flex flex-wrap items-center justify-between pb-3 mb-2 border-b border-slate-800/80 text-xs font-mono-code">
+      <div className="rounded-2xl cosmic-glass p-4 shadow-xl">
+        <div className="flex flex-wrap items-center justify-between pb-3 mb-2 border-b border-white/[0.08] text-xs font-mono-code">
           <div className="flex items-center gap-2">
             <Activity className="h-4 w-4 text-cyan-400" />
             <span className="font-semibold text-slate-200">Integrated Gradients Feature Attribution</span>
@@ -136,7 +136,7 @@ export const XAILab: React.FC<XAILabProps> = ({ selectedTarget }) => {
             <polyline
               fill="none"
               stroke="#00f0ff"
-              strokeWidth="2"
+              strokeWidth="2.4"
               points={attributionData
                 .map((d, i) => {
                   const x = 50 + (i / (attributionData.length - 1)) * 620;
@@ -144,6 +144,7 @@ export const XAILab: React.FC<XAILabProps> = ({ selectedTarget }) => {
                   return `${x.toFixed(1)},${y.toFixed(1)}`;
                 })
                 .join(' ')}
+              className="drop-shadow-[0_0_10px_rgba(0,240,255,0.8)]"
             />
 
             {/* Ingress Annotation Marker */}
@@ -180,9 +181,9 @@ export const XAILab: React.FC<XAILabProps> = ({ selectedTarget }) => {
       {/* Lower Row: 2D UMAP Latent Space & Layer Activations */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* 1. 2D UMAP Latent Space Embeddings */}
-        <div className="rounded-xl border border-cyan-950/80 bg-[#090f1d] p-4 shadow-lg flex flex-col justify-between">
+        <div className="rounded-2xl cosmic-glass p-4 shadow-xl flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between pb-2 border-b border-slate-800/80 text-xs font-mono-code">
+            <div className="flex items-center justify-between pb-2 border-b border-white/[0.08] text-xs font-mono-code">
               <span className="text-slate-300 uppercase tracking-wider flex items-center gap-1.5 font-semibold">
                 <BrainCircuit className="h-3.5 w-3.5 text-cyan-400" />
                 2D UMAP Latent Space Embedding
@@ -223,7 +224,7 @@ export const XAILab: React.FC<XAILabProps> = ({ selectedTarget }) => {
                         fill={isCandidate ? '#00f0ff' : pt.disp === 'MARGINAL' ? '#f59e0b' : '#f43f5e'}
                         stroke={isCurrent ? '#ffffff' : 'none'}
                         strokeWidth={1.5}
-                        className={isCurrent ? 'animate-pulse' : ''}
+                        className={isCurrent ? 'animate-pulse drop-shadow-[0_0_8px_rgba(0,240,255,0.8)]' : ''}
                       />
                       {isCurrent && (
                         <circle
@@ -243,7 +244,7 @@ export const XAILab: React.FC<XAILabProps> = ({ selectedTarget }) => {
 
               {/* Hover details badge */}
               {hoverUmapPoint && (
-                <div className="absolute top-2 left-2 rounded border border-cyan-500/40 bg-[#060a14]/95 p-2 font-mono-code text-[10px] text-cyan-300 backdrop-blur-md">
+                <div className="absolute top-2 left-2 rounded-xl border border-cyan-500/40 bg-[#060a14]/95 p-2 font-mono-code text-[10px] text-cyan-300 backdrop-blur-md">
                   <div>Target: <strong className="text-white">{hoverUmapPoint.id}</strong></div>
                   <div>Cluster: <strong className="text-cyan-400">{hoverUmapPoint.disp}</strong></div>
                 </div>
@@ -251,16 +252,16 @@ export const XAILab: React.FC<XAILabProps> = ({ selectedTarget }) => {
             </div>
           </div>
 
-          <div className="text-[11px] font-mono-code text-slate-400 pt-1 border-t border-slate-800/60 flex justify-between">
+          <div className="text-[11px] font-mono-code text-slate-400 pt-2 border-t border-white/[0.08] flex justify-between">
             <span>Projection: <strong className="text-cyan-400">Cosine Metric</strong></span>
             <span>Current: <strong className="text-slate-200">{selectedTarget.id}</strong></span>
           </div>
         </div>
 
         {/* 2. Convolutional Filter Activations */}
-        <div className="rounded-xl border border-cyan-950/80 bg-[#090f1d] p-4 shadow-lg flex flex-col justify-between">
+        <div className="rounded-2xl cosmic-glass p-4 shadow-xl flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between pb-2 border-b border-slate-800/80 text-xs font-mono-code">
+            <div className="flex items-center justify-between pb-2 border-b border-white/[0.08] text-xs font-mono-code">
               <span className="text-slate-300 uppercase tracking-wider flex items-center gap-1.5 font-semibold">
                 <Sliders className="h-3.5 w-3.5 text-cyan-400" />
                 Layer Activations

@@ -47,8 +47,8 @@ export const PhaseFoldedViewer: React.FC<PhaseFoldedViewerProps> = ({ target }) 
     .join(' ');
 
   return (
-    <div className="relative rounded-xl border border-cyan-950/80 bg-[#090f1d] p-3 shadow-md flex flex-col justify-between">
-      <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
+    <div className="relative rounded-2xl cosmic-glass p-4 flex flex-col justify-between">
+      <div className="flex items-center justify-between pb-2 border-b border-white/[0.08]">
         <div className="flex items-center gap-1.5 text-xs font-mono-code text-cyan-400 font-semibold">
           <GitCommit className="h-3.5 w-3.5" />
           <span>Phase-Folded Model</span>
@@ -98,9 +98,10 @@ export const PhaseFoldedViewer: React.FC<PhaseFoldedViewerProps> = ({ target }) 
           <polyline
             fill="none"
             stroke="#00f0ff"
-            strokeWidth="2"
+            strokeWidth="2.2"
             strokeLinecap="round"
             points={modelPolyline}
+            className="drop-shadow-[0_0_8px_rgba(0,240,255,0.7)]"
           />
 
           {/* Y-Axis */}
@@ -130,7 +131,7 @@ export const PhaseFoldedViewer: React.FC<PhaseFoldedViewerProps> = ({ target }) 
         </svg>
       </div>
 
-      <div className="flex items-center justify-between text-[10px] font-mono-code text-slate-400 pt-1 border-t border-slate-800/60">
+      <div className="flex items-center justify-between text-[10px] font-mono-code text-slate-400 pt-2 border-t border-white/[0.08]">
         <span className="text-cyan-400">Primary Eclipse: Vetted</span>
         <span className="text-slate-400">Secondary: Absent</span>
       </div>

@@ -1,17 +1,48 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AstroTransit OS v3.0 | Exoplanet Photometric Vetting Terminal</title>
-    <meta name="description" content="Core astrophysics engine for transit telemetry vetting, 3D orbit simulations, and deep neural interpretability." />
+    <title>AstroTransit OS | Planetary Photometric Vetting Terminal &amp; 3D Orbital Dynamics</title>
+    <meta name="description" content="Astrophysics Photometric Vetting Terminal, 3D Habitable Zone Orbit Simulator, MAST Archive Explorer, and XAI Diagnostic Lab for exoplanet discovery." />
+    <meta property="og:title" content="AstroTransit OS | Planetary Photometric Vetting Terminal &amp; 3D Orbital Dynamics" />
+    <meta property="og:description" content="Astrophysics Photometric Vetting Terminal, 3D Habitable Zone Orbit Simulator, MAST Archive Explorer, and XAI Diagnostic Lab for exoplanet discovery." />
+    <link rel="icon" type="image/png" href="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202005_3346cc4d-ec3b-44ab-825c-b18e49f5021a.png" />
+    
+    <!-- Google Fonts for Hero & AstroTransit OS System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Rajdhani:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Poppins:wght@500;600;700&family=Prata&family=Rajdhani:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+      // Suppress benign Vite dev server WebSocket disconnect rejections in sandboxed iframes
+      window.addEventListener('unhandledrejection', function(event) {
+        if (event && event.reason) {
+          var reasonStr = typeof event.reason === 'string' ? event.reason : (event.reason.message || String(event.reason));
+          if (reasonStr.indexOf('WebSocket') !== -1 || reasonStr.indexOf('websocket') !== -1) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            return false;
+          }
+        }
+      });
+      window.addEventListener('error', function(event) {
+        if (event && event.message && (event.message.indexOf('WebSocket') !== -1 || event.message.indexOf('websocket') !== -1)) {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          return false;
+        }
+      });
+    </script>
+
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+    </style>
   </head>
-  <body class="bg-[#070b14] text-slate-100 antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
+  <body class="bg-[#05070D] text-slate-100 selection:bg-cyan-500 selection:text-slate-900">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-
