@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './HeroSection.css';
 import { TabType } from '../types';
 import { BaselinePlanetKey } from '../data/baselineTargets';
+import { AstroTransitLogo } from './AstroTransitLogo';
 
 export type PlanetKey = BaselinePlanetKey;
 
@@ -131,6 +132,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             tabIndex={0}
             aria-label="AstroTransit OS - Scroll to terminal"
           >
+            <AstroTransitLogo className="w-7 h-7 inline-block mr-2" />
             astro<i>transit</i> <span>OS</span>
           </div>
 

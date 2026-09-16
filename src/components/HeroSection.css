@@ -166,6 +166,8 @@
 }
 
 .hero-logo {
+  display: inline-flex;
+  align-items: center;
   font-family: var(--font-logo);
   font-weight: 600;
   font-size: calc(18.4 * var(--u));

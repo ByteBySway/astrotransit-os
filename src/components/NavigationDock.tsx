@@ -10,6 +10,7 @@ import {
   Sparkles,
   Radio
 } from 'lucide-react';
+import { AstroTransitLogo } from './AstroTransitLogo';
 import { AudioEngine, HapticEngine } from '../utils/feedbackEngine';
 
 interface NavigationDockProps {
@@ -73,13 +74,7 @@ export const NavigationDock: React.FC<NavigationDockProps> = ({
       {/* Top OS Brand Header */}
       <div>
         <div className="flex items-center gap-3 px-2 py-3 border-b border-white/[0.08]">
-          <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-cyan-950 to-blue-900 border border-cyan-400/40 text-cyan-400 shadow-lg shadow-cyan-950/80">
-            <Radio className="h-5 w-5 animate-pulse" />
-            <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500" />
-            </span>
-          </div>
+          <AstroTransitLogo className="w-8 h-8 shrink-0" />
 
           <div className="hidden md:block">
             <div className="font-display text-base font-black tracking-widest text-white uppercase glow-cyan flex items-center gap-1.5">
