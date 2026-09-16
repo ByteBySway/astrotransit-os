@@ -47,14 +47,14 @@ export const PhaseFoldedViewer: React.FC<PhaseFoldedViewerProps> = ({ target }) 
     .join(' ');
 
   return (
-    <div className="relative rounded-2xl cosmic-glass p-4 flex flex-col justify-between">
+    <div className="relative rounded-sm cosmic-glass p-4 border border-white/[0.08] flex flex-col justify-between">
       <div className="flex items-center justify-between pb-2 border-b border-white/[0.08]">
-        <div className="flex items-center gap-1.5 text-xs font-mono-code text-cyan-400 font-semibold">
+        <div className="flex items-center gap-1.5 text-xs font-mono-code text-cyan-400 font-semibold uppercase tracking-wider">
           <GitCommit className="h-3.5 w-3.5" />
           <span>Phase-Folded Model</span>
         </div>
-        <div className="text-[10px] font-mono-code text-slate-400">
-          SNR: <strong className="text-cyan-300">{target.snr.toFixed(1)}</strong> · $\chi^2$: <strong className="text-slate-200">1.08</strong>
+        <div className="text-[10px] font-mono-code text-slate-400 uppercase tracking-wider">
+          SNR: <strong className="text-cyan-300 tabular-nums">{target.snr.toFixed(1)}</strong> · χ²: <strong className="text-slate-200 tabular-nums">1.08</strong>
         </div>
       </div>
 
@@ -88,24 +88,23 @@ export const PhaseFoldedViewer: React.FC<PhaseFoldedViewerProps> = ({ target }) 
               key={i}
               cx={getX(d.phase)}
               cy={getY(d.flux)}
-              r="1.4"
-              fill="#ec4899"
-              opacity="0.6"
+              r="1.3"
+              fill="#38bdf8"
+              opacity="0.45"
             />
           ))}
 
           {/* Theoretical Model Line */}
           <polyline
             fill="none"
-            stroke="#00f0ff"
-            strokeWidth="2.2"
+            stroke="#0ea5e9"
+            strokeWidth="1.8"
             strokeLinecap="round"
             points={modelPolyline}
-            className="drop-shadow-[0_0_8px_rgba(0,240,255,0.7)]"
           />
 
           {/* Y-Axis */}
-          <g className="font-mono-code text-[9px] fill-slate-400" textAnchor="end">
+          <g className="font-mono-code text-[9px] fill-slate-400 tabular-nums" textAnchor="end">
             <text x={padLeft - 4} y={padTop + 6}>{maxFlux.toFixed(4)}</text>
             <text x={padLeft - 4} y={height - padBottom}>{minFlux.toFixed(4)}</text>
             <text
@@ -113,25 +112,25 @@ export const PhaseFoldedViewer: React.FC<PhaseFoldedViewerProps> = ({ target }) 
               y={height / 2}
               textAnchor="middle"
               transform={`rotate(-90 12 ${height / 2})`}
-              className="fill-slate-400 text-[8px]"
+              className="fill-slate-400 text-[8px] uppercase tracking-wider"
             >
               Norm Flux
             </text>
           </g>
 
           {/* X-Axis */}
-          <g className="font-mono-code text-[9px] fill-slate-400" textAnchor="middle">
-            <text x={padLeft} y={height - padBottom + 14}>-0.1</text>
-            <text x={padLeft + plotW / 2} y={height - padBottom + 14}>0.0</text>
-            <text x={width - padRight} y={height - padBottom + 14}>+0.1</text>
-            <text x={padLeft + plotW / 2} y={height - 2} className="fill-slate-400 text-[9px]">
+          <g className="font-mono-code text-[9px] fill-slate-400 tabular-nums" textAnchor="middle">
+            <text x={padLeft} y={height - padBottom + 14}>-0.10</text>
+            <text x={padLeft + plotW / 2} y={height - padBottom + 14}>0.00</text>
+            <text x={width - padRight} y={height - padBottom + 14}>+0.10</text>
+            <text x={padLeft + plotW / 2} y={height - 2} className="fill-slate-400 text-[8px] uppercase tracking-wider">
               Orbital Phase (Days)
             </text>
           </g>
         </svg>
       </div>
 
-      <div className="flex items-center justify-between text-[10px] font-mono-code text-slate-400 pt-2 border-t border-white/[0.08]">
+      <div className="flex items-center justify-between text-[10px] font-mono-code text-slate-400 pt-2 border-t border-white/[0.08] uppercase tracking-wider">
         <span className="text-cyan-400">Primary Eclipse: Vetted</span>
         <span className="text-slate-400">Secondary: Absent</span>
       </div>

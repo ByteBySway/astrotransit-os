@@ -146,14 +146,14 @@ export const ArchiveExplorer: React.FC<ArchiveExplorerProps> = ({
 
         {/* Uplink status & export */}
         <div className="flex items-center gap-3 font-mono-code text-xs">
-          <div className="flex items-center gap-2 rounded-xl cosmic-glass px-3 py-1.5 text-slate-300">
-            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+          <div className="flex items-center gap-2 rounded-sm cosmic-glass px-3 py-1.5 border border-white/[0.08] text-slate-300 uppercase tracking-wider text-[11px]">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
             <span>Connection: STScI Uplink Active</span>
           </div>
 
           <button
             onClick={handleExportCSV}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-cyan-500/40 bg-cyan-950/70 hover:bg-cyan-900/80 text-cyan-300 transition-colors shadow-lg cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-sm border border-cyan-500/40 bg-cyan-950/70 hover:bg-cyan-900/80 text-cyan-300 uppercase tracking-wider text-[11px] transition-colors shadow-sm cursor-pointer"
           >
             <Download className="h-3.5 w-3.5" />
             <span>Export CSV ({selectedRowIds.length || sortedList.length})</span>
@@ -162,13 +162,13 @@ export const ArchiveExplorer: React.FC<ArchiveExplorerProps> = ({
       </div>
 
       {/* ADQL Query Console matching screenshot 3 */}
-      <div className="rounded-2xl cosmic-glass p-4 shadow-xl">
-        <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-800/80 text-xs font-mono-code">
-          <span className="text-cyan-400 font-semibold flex items-center gap-1.5">
+      <div className="rounded-sm cosmic-glass p-4 border border-white/[0.08] shadow-xl">
+        <div className="flex items-center justify-between pb-2 mb-2 border-b border-white/[0.08] text-xs font-mono-code">
+          <span className="text-cyan-400 font-semibold flex items-center gap-1.5 uppercase tracking-wider text-[11px]">
             <Database className="h-3.5 w-3.5" />
             ADQL / TAP Synchronous Query
           </span>
-          <span className="text-slate-400">Target Catalog: <strong className="text-slate-200">Kepler KOI DR25 + TESS TOI</strong></span>
+          <span className="text-slate-400 text-[11px]">Target Catalog: <strong className="text-slate-200">Kepler KOI DR25 + TESS TOI</strong></span>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-2">
@@ -177,13 +177,13 @@ export const ArchiveExplorer: React.FC<ArchiveExplorerProps> = ({
               type="text"
               value={adqlQuery}
               onChange={(e) => setAdqlQuery(e.target.value)}
-              className="w-full rounded-lg border border-slate-800 bg-[#060a14] px-3 py-2 font-mono-code text-xs text-cyan-300 placeholder-slate-600 focus:border-cyan-500 focus:outline-none"
+              className="w-full rounded-sm border border-white/10 bg-[#060a14] px-3 py-2 font-mono-code text-xs text-cyan-300 placeholder-slate-600 focus:border-cyan-400 focus:outline-none"
             />
           </div>
           <button
             onClick={handleExecuteADQL}
             disabled={isExecuting}
-            className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg border border-cyan-400 bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-mono-code text-xs font-bold transition-all shadow-md shadow-cyan-900/40"
+            className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-sm border border-cyan-400 bg-cyan-950/90 hover:bg-cyan-900 text-cyan-300 font-mono-code text-xs uppercase tracking-wider font-bold transition-all shadow-sm shadow-cyan-950/50 cursor-pointer"
           >
             {isExecuting ? (
               <RefreshCw className="h-3.5 w-3.5 animate-spin" />
@@ -196,13 +196,13 @@ export const ArchiveExplorer: React.FC<ArchiveExplorerProps> = ({
 
         {/* Quick Filter Presets */}
         <div className="mt-3 flex flex-wrap items-center gap-2 text-xs font-mono-code">
-          <span className="text-slate-400 text-[11px]">Quick Filters:</span>
+          <span className="text-slate-400 text-[11px] uppercase tracking-wider">Quick Filters:</span>
           <button
             onClick={() => {
               setAdqlQuery('SELECT * FROM kepler_koi WHERE snr > 15.0');
               handleExecuteADQL();
             }}
-            className="px-2 py-0.5 rounded border border-slate-800 bg-[#060b16] text-slate-300 hover:border-cyan-500/50 hover:text-cyan-300"
+            className="px-2 py-0.5 rounded-sm border border-white/10 bg-[#060b16] text-slate-300 hover:border-cyan-500/50 hover:text-cyan-300 uppercase text-[10px] tracking-wider transition-colors cursor-pointer"
           >
             SNR &gt; 15
           </button>
@@ -211,7 +211,7 @@ export const ArchiveExplorer: React.FC<ArchiveExplorerProps> = ({
               setAdqlQuery('SELECT * FROM kepler_koi WHERE pradius < 1.5');
               handleExecuteADQL();
             }}
-            className="px-2 py-0.5 rounded border border-slate-800 bg-[#060b16] text-slate-300 hover:border-cyan-500/50 hover:text-cyan-300"
+            className="px-2 py-0.5 rounded-sm border border-white/10 bg-[#060b16] text-slate-300 hover:border-cyan-500/50 hover:text-cyan-300 uppercase text-[10px] tracking-wider transition-colors cursor-pointer"
           >
             Earth Candidates (R &lt; 1.5)
           </button>
@@ -219,7 +219,7 @@ export const ArchiveExplorer: React.FC<ArchiveExplorerProps> = ({
             onClick={() => {
               setFilterDisposition('CONFIRMED');
             }}
-            className="px-2 py-0.5 rounded border border-slate-800 bg-[#060b16] text-slate-300 hover:border-cyan-500/50 hover:text-cyan-300"
+            className="px-2 py-0.5 rounded-sm border border-white/10 bg-[#060b16] text-slate-300 hover:border-cyan-500/50 hover:text-cyan-300 uppercase text-[10px] tracking-wider transition-colors cursor-pointer"
           >
             Confirmed Only
           </button>
@@ -228,7 +228,7 @@ export const ArchiveExplorer: React.FC<ArchiveExplorerProps> = ({
               setFilterDisposition('ALL');
               setSearchFilter('');
             }}
-            className="px-2 py-0.5 rounded border border-slate-800 bg-[#060b16] text-slate-400 hover:text-slate-200"
+            className="px-2 py-0.5 rounded-sm border border-white/10 bg-[#060b16] text-slate-400 hover:text-slate-200 uppercase text-[10px] tracking-wider transition-colors cursor-pointer"
           >
             Clear All
           </button>
@@ -236,7 +236,7 @@ export const ArchiveExplorer: React.FC<ArchiveExplorerProps> = ({
       </div>
 
       {/* Main Filter & Interactive Data Table */}
-      <div className="rounded-2xl cosmic-glass overflow-hidden shadow-2xl">
+      <div className="rounded-sm cosmic-glass border border-white/[0.08] overflow-hidden shadow-2xl">
         {/* Table controls */}
         <div className="p-3 border-b border-white/[0.08] flex flex-wrap items-center justify-between gap-3 text-xs font-mono-code">
           <div className="flex items-center gap-2">
@@ -247,7 +247,7 @@ export const ArchiveExplorer: React.FC<ArchiveExplorerProps> = ({
                 placeholder="Filter targets..."
                 value={searchFilter}
                 onChange={(e) => setSearchFilter(e.target.value)}
-                className="w-44 rounded-lg border border-slate-800 bg-[#060b16] pl-8 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:border-cyan-500 focus:outline-none"
+                className="w-44 rounded-sm border border-white/10 bg-[#060b16] pl-8 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:border-cyan-400 focus:outline-none"
               />
             </div>
 
@@ -256,10 +256,10 @@ export const ArchiveExplorer: React.FC<ArchiveExplorerProps> = ({
                 <button
                   key={disp}
                   onClick={() => setFilterDisposition(disp)}
-                  className={`px-2.5 py-1 rounded text-[11px] transition-colors ${
+                  className={`px-2.5 py-1 rounded-sm text-[10px] uppercase tracking-wider transition-colors cursor-pointer ${
                     filterDisposition === disp
-                      ? 'bg-cyan-950/80 text-cyan-300 font-bold border border-cyan-500/40'
-                      : 'text-slate-400 hover:text-slate-200'
+                      ? 'bg-cyan-950/90 text-cyan-300 font-bold border border-cyan-500/40'
+                      : 'text-slate-400 hover:text-slate-200 border border-transparent'
                   }`}
                 >
                   {disp}
@@ -268,15 +268,15 @@ export const ArchiveExplorer: React.FC<ArchiveExplorerProps> = ({
             </div>
           </div>
 
-          <div className="text-slate-400 text-[11px]">
-            Selected: <strong className="text-cyan-400">{selectedRowIds.length}</strong> targets
+          <div className="text-slate-400 text-[11px] uppercase tracking-wider">
+            Selected: <strong className="text-cyan-400 tabular-nums">{selectedRowIds.length}</strong> targets
           </div>
         </div>
 
         {/* Data Table matching screenshot 3 */}
         <div className="overflow-x-auto">
           <table className="w-full text-left font-mono-code text-xs">
-            <thead className="bg-[#060b16] text-slate-400 border-b border-slate-800/80 text-[11px] uppercase tracking-wider">
+            <thead className="bg-[#060b16] text-slate-400 border-b border-white/[0.08] text-[10px] uppercase tracking-widest">
               <tr>
                 <th className="p-3 w-10 text-center">
                   <button onClick={handleToggleSelectAll} className="text-slate-400 hover:text-cyan-300">
@@ -365,7 +365,7 @@ export const ArchiveExplorer: React.FC<ArchiveExplorerProps> = ({
               </tr>
             </thead>
 
-            <tbody className="divide-y divide-slate-800/50">
+            <tbody className="divide-y divide-white/[0.04]">
               {sortedList.map((target) => {
                 const isSelected = selectedRowIds.includes(target.id);
                 const isCurrent = selectedTarget.id === target.id;
@@ -396,7 +396,7 @@ export const ArchiveExplorer: React.FC<ArchiveExplorerProps> = ({
 
                     <td className="p-3 font-bold">
                       <div className="flex items-center gap-1.5">
-                        <span className="text-cyan-400">{target.id}</span>
+                        <span className="text-cyan-300">{target.id}</span>
                         {isCurrent && (
                           <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-ping" />
                         )}
@@ -404,15 +404,15 @@ export const ArchiveExplorer: React.FC<ArchiveExplorerProps> = ({
                       <div className="text-[10px] text-slate-500">{target.name}</div>
                     </td>
 
-                    <td className="p-3">{target.orbitalPeriod.toFixed(4)}</td>
-                    <td className="p-3">{target.transitDepth.toLocaleString()}</td>
+                    <td className="p-3 tabular-nums">{target.orbitalPeriod.toFixed(4)}</td>
+                    <td className="p-3 tabular-nums">{target.transitDepth.toLocaleString()}</td>
                     <td className="p-3">
                       <div className="flex items-center gap-1.5">
-                        <span className="font-semibold text-slate-200">{target.planetRadius.toFixed(2)}</span>
+                        <span className="font-semibold text-slate-200 tabular-nums">{target.planetRadius.toFixed(2)}</span>
                         {(() => {
                           const cls = getPlanetaryClassification(target.planetRadius);
                           return (
-                            <span className={`text-[9px] px-1.5 py-0.2 rounded border font-semibold ${cls.borderClass} ${cls.bgClass} ${cls.colorClass}`}>
+                            <span className={`text-[9px] px-1.5 py-0.2 rounded-sm border font-mono-code font-bold uppercase tracking-wider ${cls.borderClass} ${cls.bgClass} ${cls.colorClass}`}>
                               {cls.badgeLabel.replace('CLASS: ', '')}
                             </span>
                           );
@@ -426,7 +426,7 @@ export const ArchiveExplorer: React.FC<ArchiveExplorerProps> = ({
                         <svg viewBox="0 0 80 24" className="w-full h-full">
                           <polyline
                             fill="none"
-                            stroke={target.disposition === 'FALSE POSITIVE' ? '#f43f5e' : '#00f0ff'}
+                            stroke={target.disposition === 'FALSE POSITIVE' ? '#f43f5e' : '#38bdf8'}
                             strokeWidth="1.5"
                             points="0,6 25,6 35,18 45,18 55,6 80,6"
                           />
@@ -434,12 +434,12 @@ export const ArchiveExplorer: React.FC<ArchiveExplorerProps> = ({
                       </div>
                     </td>
 
-                    <td className="p-3 font-semibold text-slate-200">{target.snr.toFixed(1)}</td>
+                    <td className="p-3 font-semibold text-slate-200 tabular-nums">{target.snr.toFixed(1)}</td>
 
                     {/* ML Confidence Badge */}
                     <td className="p-3">
                       <span
-                        className={`inline-block px-2 py-0.5 rounded font-bold ${
+                        className={`inline-block px-2 py-0.5 rounded-sm font-mono-code text-[11px] font-bold uppercase tracking-wider tabular-nums ${
                           target.mlConfidence > 0.85
                             ? 'text-cyan-300 bg-cyan-950/60 border border-cyan-500/40'
                             : target.mlConfidence > 0.5
@@ -451,15 +451,15 @@ export const ArchiveExplorer: React.FC<ArchiveExplorerProps> = ({
                       </span>
                     </td>
 
-                    {/* Disposition Pill */}
+                    {/* Disposition Sharp Flight Tag */}
                     <td className="p-3">
                       <span
-                        className={`inline-block text-[10px] px-2 py-0.5 rounded uppercase font-semibold ${
+                        className={`inline-block text-[10px] px-2 py-0.5 rounded-sm font-mono-code uppercase font-semibold tracking-wider ${
                           target.disposition === 'CONFIRMED'
-                            ? 'text-emerald-400 bg-emerald-950/40 border border-emerald-500/30'
+                            ? 'text-emerald-400 bg-emerald-950/50 border border-emerald-500/30'
                             : target.disposition === 'FALSE POSITIVE'
-                            ? 'text-rose-400 bg-rose-950/40 border border-rose-500/30'
-                            : 'text-cyan-400 bg-cyan-950/40 border border-cyan-500/30'
+                            ? 'text-rose-400 bg-rose-950/50 border border-rose-500/30'
+                            : 'text-cyan-400 bg-cyan-950/50 border border-cyan-500/30'
                         }`}
                       >
                         {target.disposition}
@@ -475,9 +475,9 @@ export const ArchiveExplorer: React.FC<ArchiveExplorerProps> = ({
                           onSelectTarget(target);
                           onJumpToVetting(target);
                         }}
-                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded border border-slate-700 bg-[#060a14] text-xs font-semibold text-cyan-300 hover:border-cyan-400 hover:bg-cyan-950/60 transition-colors"
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-sm border border-white/10 bg-[#060a14] text-xs font-mono-code uppercase tracking-wider font-semibold text-cyan-300 hover:border-cyan-400 hover:bg-cyan-950/60 transition-colors cursor-pointer"
                       >
-                        <span>Load</span>
+                        <span>LOAD</span>
                         <ExternalLink className="h-3 w-3" />
                       </button>
                     </td>

@@ -122,7 +122,7 @@ export const PlanetHero: React.FC<PlanetHeroProps> = ({
         >
           <span className="font-display text-lg sm:text-xl font-black tracking-widest text-white uppercase group-hover:text-cyan-300 transition-colors">
             ASTRO<i className="text-cyan-400 font-serif italic not-italic">TRANSIT</i>{' '}
-            <span className="text-xs px-2 py-0.5 rounded-full border border-cyan-400/50 bg-cyan-950/60 text-cyan-300 font-mono-code font-normal">
+            <span className="text-[10px] px-1.5 py-0.5 rounded-sm border border-cyan-400/50 bg-cyan-950/70 text-cyan-300 font-mono-code uppercase font-semibold">
               OS
             </span>
           </span>
@@ -132,9 +132,10 @@ export const PlanetHero: React.FC<PlanetHeroProps> = ({
           <button
             type="button"
             onClick={handleGetStarted}
-            className="hidden sm:inline-flex px-4 py-2 rounded-full border border-white/20 bg-white/10 hover:bg-white/20 hover:border-cyan-400 text-white font-semibold transition-all backdrop-blur-md cursor-pointer"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-sm border border-white/20 bg-white/5 hover:bg-white/10 hover:border-cyan-400 text-slate-200 hover:text-white font-mono-code uppercase text-xs tracking-wider transition-all backdrop-blur-md cursor-pointer"
           >
-            Vetting Terminal &darr;
+            <span>VETTING TERMINAL</span>
+            <span>&darr;</span>
           </button>
         </div>
       </header>
@@ -198,21 +199,22 @@ export const PlanetHero: React.FC<PlanetHeroProps> = ({
         </h1>
 
         {/* Cyan divider line */}
-        <div className="w-20 sm:w-28 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent my-4 sm:my-5 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.9)]" />
+        <div className="w-16 sm:w-24 h-[1px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent my-4 sm:my-5" />
 
         {/* Description paragraph explaining the planetary baseline */}
-        <p className="max-w-xl text-slate-200 text-sm sm:text-base font-hanken leading-relaxed text-center px-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+        <p className="max-w-xl text-slate-300 text-sm sm:text-base font-hanken leading-relaxed text-center px-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
           {currentData.description}
         </p>
 
-        {/* Glossy white pill button: "GET STARTED" */}
+        {/* Crisp aerospace precision button: "INITIALIZE VETTING CONSOLE" */}
         <button
           type="button"
           id="hero-get-started-btn"
           onClick={handleGetStarted}
-          className="mt-8 px-8 sm:px-12 py-3.5 sm:py-4 rounded-full bg-white text-slate-950 font-poppins font-bold text-xs sm:text-sm tracking-widest uppercase shadow-[0_0_35px_rgba(255,255,255,0.45)] hover:shadow-[0_0_55px_rgba(34,211,238,0.7)] hover:bg-cyan-50 active:scale-95 transition-all duration-300 cursor-pointer border border-white/80"
+          className="mt-8 px-8 sm:px-10 py-3 sm:py-3.5 rounded-sm border border-cyan-400/80 bg-cyan-950/70 text-cyan-300 font-mono-code text-xs sm:text-sm tracking-widest uppercase shadow-[0_0_20px_rgba(56,189,248,0.25)] hover:shadow-[0_0_30px_rgba(56,189,248,0.45)] hover:bg-cyan-900/80 hover:text-white active:scale-95 transition-all duration-300 cursor-pointer backdrop-blur-md flex items-center gap-2"
         >
-          GET STARTED
+          <span>INITIALIZE VETTING CONSOLE</span>
+          <span className="text-cyan-400">&darr;</span>
         </button>
       </div>
 

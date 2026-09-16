@@ -31,17 +31,17 @@ export const TpfCcdViewer: React.FC<TpfCcdViewerProps> = ({ target }) => {
   };
 
   return (
-    <div className="relative rounded-2xl cosmic-glass p-4 flex flex-col justify-between">
+    <div className="relative rounded-sm cosmic-glass p-4 border border-white/[0.08] flex flex-col justify-between">
       <div className="flex items-center justify-between pb-2 border-b border-white/[0.08]">
-        <div className="flex items-center gap-1.5 text-xs font-mono-code text-cyan-400 font-semibold">
+        <div className="flex items-center gap-1.5 text-xs font-mono-code text-cyan-400 font-semibold uppercase tracking-wider">
           <Grid className="h-3.5 w-3.5" />
-          <span>TPF 5x5 CCD</span>
+          <span>TPF 5x5 CCD FLUX MATRIX</span>
         </div>
         <div
-          className={`flex items-center gap-1 text-[10px] font-mono-code px-2 py-0.5 rounded-full border ${
+          className={`flex items-center gap-1 text-[10px] font-mono-code px-2 py-0.5 rounded-sm border uppercase tracking-wider ${
             isAlert
-              ? 'border-amber-500/50 bg-amber-950/30 text-amber-300'
-              : 'border-cyan-500/40 bg-cyan-950/30 text-cyan-300'
+              ? 'border-amber-500/50 bg-amber-950/40 text-amber-300'
+              : 'border-cyan-500/40 bg-cyan-950/40 text-cyan-300'
           }`}
         >
           {isAlert ? <AlertTriangle className="h-3 w-3 text-amber-400" /> : <CheckCircle className="h-3 w-3 text-emerald-400" />}
@@ -51,7 +51,7 @@ export const TpfCcdViewer: React.FC<TpfCcdViewerProps> = ({ target }) => {
 
       {/* 5x5 Grid Container */}
       <div className="my-auto py-2 flex items-center justify-center">
-        <div className="relative grid grid-cols-5 gap-1 p-2 rounded-xl border border-white/10 bg-[#060b16]/80 backdrop-blur-md">
+        <div className="relative grid grid-cols-5 gap-1 p-2 rounded-sm border border-white/10 bg-[#060b16]/90 backdrop-blur-md">
           {matrix.map((row, y) =>
             row.map((val, x) => (
               <div
@@ -59,12 +59,12 @@ export const TpfCcdViewer: React.FC<TpfCcdViewerProps> = ({ target }) => {
                 className="relative h-7 w-7 sm:h-8 sm:w-8 rounded-sm transition-all duration-300 flex items-center justify-center text-[8px] font-mono-code text-cyan-200/50"
                 style={{
                   backgroundColor: getColor(val),
-                  boxShadow: val > max * 0.8 ? '0 0 10px rgba(0, 240, 255, 0.4)' : 'none',
+                  boxShadow: val > max * 0.8 ? '0 0 8px rgba(56, 189, 248, 0.3)' : 'none',
                 }}
               >
                 {/* Center target indicator */}
                 {x === 2 && y === 2 && (
-                  <div className="h-2 w-2 rounded-full bg-white shadow-md animate-pulse" />
+                  <div className="h-1.5 w-1.5 rounded-sm bg-white shadow-sm" />
                 )}
               </div>
             ))
@@ -72,7 +72,7 @@ export const TpfCcdViewer: React.FC<TpfCcdViewerProps> = ({ target }) => {
 
           {/* Sub-pixel Centroid Offset Indicator Point */}
           <div
-            className="absolute h-3 w-3 rounded-full border border-rose-400 bg-rose-500/80 shadow-md transform -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all duration-500"
+            className="absolute h-2.5 w-2.5 rounded-full border border-rose-400 bg-rose-500/90 shadow-sm transform -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all duration-500 ring-2 ring-rose-400/30"
             style={{
               left: `${((2.5 + centroid.x) / 5) * 100}%`,
               top: `${((2.5 + centroid.y) / 5) * 100}%`,
@@ -82,7 +82,7 @@ export const TpfCcdViewer: React.FC<TpfCcdViewerProps> = ({ target }) => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between text-[10px] font-mono-code text-slate-400 pt-2 border-t border-white/[0.08]">
+      <div className="flex items-center justify-between text-[10px] font-mono-code text-slate-400 pt-2 border-t border-white/[0.08] uppercase tracking-wider">
         <span>Pixel Scale: 3.98&quot; / px</span>
         <span className={isAlert ? 'text-amber-400' : 'text-emerald-400'}>
           {isAlert ? 'Marginal blend risk' : 'Direct host centering'}
