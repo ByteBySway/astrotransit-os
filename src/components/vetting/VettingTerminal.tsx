@@ -7,6 +7,8 @@ import { HeroPlanetaryGlobe } from './HeroPlanetaryGlobe';
 import { TripleRadialRingDial } from './TripleRadialRingDial';
 import { exportCandidateDossierPDF } from '../../utils/pdfExport';
 import { AudioEngine, HapticEngine } from '../../utils/feedbackEngine';
+import { RollingOdometer } from '../common/RollingOdometer';
+import { HudCornerBrackets } from '../common/HudCornerBrackets';
 import { 
   Sparkles, 
   CheckCircle2, 
@@ -325,36 +327,47 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
         </div>
       )}
 
-      {/* Luxury Telemetry Metric Cards (AstroPlus Obsidian Glass) */}
+      {/* Luxury Telemetry Metric Cards (AstroPlus Aerospace Glass with HUD Corner Brackets & Rolling Odometer) */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {/* Orbital Period */}
-        <div className="rounded-2xl cosmic-glass p-4 flex flex-col justify-between">
+        <div className="relative rounded-2xl cosmic-glass p-4 flex flex-col justify-between spectral-reactive-aura overflow-hidden group">
+          <HudCornerBrackets watermark="EPOCH: J2026.5 // NASA-AMES" />
           <div className="text-[11px] font-mono-code text-slate-400 uppercase tracking-wider">
             Orbital Period
           </div>
-          <div className="mt-2 flex items-baseline justify-between">
+          <div className="mt-2 flex items-baseline justify-between z-10">
             <span className="font-display text-2xl sm:text-3xl font-black text-cyan-300 glow-cyan">
-              {customParams.orbitalPeriod.toFixed(4)}
+              <RollingOdometer
+                value={customParams.orbitalPeriod}
+                decimals={4}
+                durationMs={300}
+              />
             </span>
             <span className="font-mono-code text-xs text-slate-400">days</span>
           </div>
         </div>
 
         {/* Transit Depth */}
-        <div className="rounded-2xl cosmic-glass p-4 flex flex-col justify-between">
+        <div className="relative rounded-2xl cosmic-glass p-4 flex flex-col justify-between spectral-reactive-aura overflow-hidden group">
+          <HudCornerBrackets watermark="INSTRUMENT: TESS/KEPLER" />
           <div className="text-[11px] font-mono-code text-slate-400 uppercase tracking-wider">
             Transit Depth
           </div>
-          <div className="mt-2 flex items-baseline justify-between">
+          <div className="mt-2 flex items-baseline justify-between z-10">
             <span className="font-display text-2xl sm:text-3xl font-black text-cyan-300 glow-cyan">
-              {Math.round(customParams.transitDepth).toLocaleString()}
+              <RollingOdometer
+                value={customParams.transitDepth}
+                formatLocale={true}
+                durationMs={300}
+              />
             </span>
             <span className="font-mono-code text-xs text-slate-400">ppm</span>
           </div>
         </div>
 
         {/* Planet Radius */}
-        <div className="rounded-2xl cosmic-glass p-4 flex flex-col justify-between">
+        <div className="relative rounded-2xl cosmic-glass p-4 flex flex-col justify-between spectral-reactive-aura overflow-hidden group">
+          <HudCornerBrackets watermark="CALIBRATED // ST_RAD" />
           <div className="flex items-center justify-between gap-1 text-[11px] font-mono-code text-slate-400 uppercase tracking-wider">
             <span>Planet Radius</span>
             <span
@@ -364,23 +377,32 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
               {activeRadiusClassification.badgeLabel.replace('CLASS: ', '')}
             </span>
           </div>
-          <div className="mt-2 flex items-baseline justify-between">
+          <div className="mt-2 flex items-baseline justify-between z-10">
             <span className="font-display text-2xl sm:text-3xl font-black text-cyan-300 glow-cyan">
-              {customParams.planetRadius.toFixed(2)}
+              <RollingOdometer
+                value={customParams.planetRadius}
+                decimals={2}
+                durationMs={300}
+              />
             </span>
             <span className="font-mono-code text-xs text-slate-400">R⊕</span>
           </div>
         </div>
 
         {/* Equilibrium Temp */}
-        <div className="rounded-2xl cosmic-glass p-4 flex flex-col justify-between">
+        <div className="relative rounded-2xl cosmic-glass p-4 flex flex-col justify-between spectral-reactive-aura overflow-hidden group">
+          <HudCornerBrackets watermark="ALBEDO: 0.3 // STELLAR_TEFF" />
           <div className="flex items-center justify-between text-[11px] font-mono-code text-slate-400 uppercase tracking-wider">
             <span>Equilibrium Temp</span>
             <span className="h-2 w-2 rounded-full bg-cyan-400 animate-pulse" />
           </div>
-          <div className="mt-2 flex items-baseline justify-between">
+          <div className="mt-2 flex items-baseline justify-between z-10">
             <span className="font-display text-2xl sm:text-3xl font-black text-cyan-300 glow-cyan">
-              {selectedTarget.equilibriumTemp}
+              <RollingOdometer
+                value={selectedTarget.equilibriumTemp}
+                decimals={0}
+                durationMs={300}
+              />
             </span>
             <span className="font-mono-code text-xs text-slate-400">K</span>
           </div>

@@ -12,6 +12,7 @@ import { CommandPaletteModal } from './components/modals/CommandPaletteModal';
 import { MissionTimelineModal } from './components/modals/MissionTimelineModal';
 import { exportCandidateDossierPDF } from './utils/pdfExport';
 import { PlanetHero } from './components/PlanetHero';
+import { getSpectralTheme } from './utils/spectralTheme';
 
 const INITIAL_CATALOG: TargetPlanet[] = [
   EARTH_BASELINE,
@@ -215,8 +216,17 @@ export function App() {
     });
   }, []);
 
+  const spectralTheme = getSpectralTheme(selectedTarget.stellarParams?.spectralType);
+
   return (
-    <div className="min-h-screen bg-transparent text-slate-100 flex flex-col font-sans selection:bg-cyan-500 selection:text-slate-900 relative">
+    <div
+      className="min-h-screen bg-transparent text-slate-100 flex flex-col font-sans selection:bg-cyan-500 selection:text-slate-900 relative"
+      style={{
+        '--spectral-aura': spectralTheme.auraGlow,
+        '--spectral-border': spectralTheme.borderGlow,
+        '--spectral-accent': spectralTheme.accentHex,
+      } as React.CSSProperties}
+    >
       {/* 1. Dynamic Cinematic Space Background (Behind Everything) */}
       <div
         className="fixed inset-0 pointer-events-none overflow-hidden select-none"
@@ -253,7 +263,7 @@ export function App() {
           className="absolute inset-0 pointer-events-none z-20"
           style={{
             background:
-              'radial-gradient(circle at center, rgba(4,16,31,0.45) 0%, rgba(4,8,20,0.85) 100%)',
+              'radial-gradient(circle at 50% 40%, rgba(4, 12, 28, 0.45) 0%, rgba(3, 8, 20, 0.85) 85%)',
           }}
         />
       </div>

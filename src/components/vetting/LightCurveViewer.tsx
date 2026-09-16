@@ -2,6 +2,7 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { TargetPlanet } from '../../types';
 import { Activity, ZoomIn, ZoomOut, RotateCcw, Crosshair, HelpCircle, Sparkles, Sliders } from 'lucide-react';
 import { AudioEngine, HapticEngine } from '../../utils/feedbackEngine';
+import { HudCornerBrackets } from '../common/HudCornerBrackets';
 
 interface LightCurveViewerProps {
   target: TargetPlanet;
@@ -284,7 +285,8 @@ export const LightCurveViewer: React.FC<LightCurveViewerProps> = ({ target }) =>
   const hoveredPoint = hoverIndex !== null ? data[hoverIndex] : null;
 
   return (
-    <div className="relative rounded-2xl cosmic-glass p-4">
+    <div className="relative rounded-2xl cosmic-glass p-4 spectral-reactive-aura overflow-hidden">
+      <HudCornerBrackets watermark="EPOCH: J2026.5 // NASA-AMES // CALIBRATED" />
       {/* Header controls */}
       <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/[0.08]">
         {/* Mode Switcher */}

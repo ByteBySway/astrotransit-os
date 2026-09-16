@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { TargetPlanet } from '../../types';
 import { calculateHabitableZone, getMassRadiusCurves } from '../../utils/astronomy';
 import { AudioEngine, HapticEngine } from '../../utils/feedbackEngine';
+import { HudCornerBrackets } from '../common/HudCornerBrackets';
 import { 
   Orbit, 
   Rotate3d, 
@@ -395,6 +396,7 @@ export const OrbitSimulator: React.FC<OrbitSimulatorProps> = ({
         if (!p.isTarget) ctx.setLineDash([3, 5]);
 
         const steps = 96;
+        let svgPathD = '';
         for (let i = 0; i <= steps; i++) {
           const theta = (i / steps) * Math.PI * 2;
           const rTheta = (nominalA * (1 - planetE * planetE)) / (1 + planetE * Math.cos(theta));
@@ -408,11 +410,22 @@ export const OrbitSimulator: React.FC<OrbitSimulatorProps> = ({
           const tiltedZ = orbZ * Math.cos(planetIncRad);
 
           const pt = project(orbX, tiltedY, tiltedZ);
-          if (i === 0) ctx.moveTo(pt.x, pt.y);
-          else ctx.lineTo(pt.x, pt.y);
+          if (i === 0) {
+            ctx.moveTo(pt.x, pt.y);
+            svgPathD += `M ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`;
+          } else {
+            ctx.lineTo(pt.x, pt.y);
+            svgPathD += ` L ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`;
+          }
         }
         ctx.stroke();
         ctx.setLineDash([]);
+
+        // Update SVG planetary pathline DOM element for fluid CSS transitions
+        const pathEl = document.getElementById(`orbit-path-${p.name}`);
+        if (pathEl) {
+          pathEl.setAttribute('d', svgPathD);
+        }
 
         // Kepler's Second Law: Velocity modulation along eccentric orbit
         // Approximate mean anomaly to true anomaly with Keplerian velocity weighting
@@ -837,7 +850,7 @@ export const OrbitSimulator: React.FC<OrbitSimulatorProps> = ({
 
       {/* Main Interactive 3D Orbit Canvas encasing Glassmorphic Viewport Container */}
       <div
-        className="relative h-[420px] sm:h-[480px] w-full rounded-2xl cosmic-glass overflow-hidden cursor-grab active:cursor-grabbing select-none"
+        className="relative h-[420px] sm:h-[480px] w-full rounded-2xl cosmic-glass spectral-reactive-aura overflow-hidden cursor-grab active:cursor-grabbing select-none"
         onMouseDown={(e) => {
           setIsDragging(true);
           dragStartRef.current = { x: e.clientX, y: e.clientY };
@@ -849,6 +862,8 @@ export const OrbitSimulator: React.FC<OrbitSimulatorProps> = ({
           setHoveredPlanetName(null);
         }}
       >
+        <HudCornerBrackets watermark="ASTROMETRIC ORBIT SIMULATOR // KEPLERIAN-3D" />
+
         <canvas
           ref={canvasRef}
           width={1200}
@@ -856,6 +871,47 @@ export const OrbitSimulator: React.FC<OrbitSimulatorProps> = ({
           onClick={handleCanvasClick}
           className="w-full h-full object-cover"
         />
+
+        {/* SVG Planetary Pathlines with Fluid CSS Transitions */}
+        <svg
+          viewBox="0 0 1200 600"
+          className="absolute inset-0 w-full h-full pointer-events-none overflow-visible z-10"
+        >
+          <defs>
+            <filter id="orbitGlowEffect" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="3.5" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+          {systemPlanets.map((p) => {
+            const isTarget = p.isTarget;
+            const isHovered = hoveredPlanetName === p.name;
+            const isCardActive = activePlanetCard?.name === p.name;
+            return (
+              <path
+                key={p.name}
+                id={`orbit-path-${p.name}`}
+                fill="none"
+                className={`planetary-pathline pointer-events-none transition-all duration-700 ease-out ${
+                  isTarget ? 'animate-orbit-target-dash' : 'animate-orbit-dash'
+                }`}
+                style={{
+                  stroke: isTarget
+                    ? 'rgba(0, 240, 255, 0.90)'
+                    : isHovered || isCardActive
+                    ? 'rgba(56, 189, 248, 0.70)'
+                    : 'rgba(148, 163, 184, 0.28)',
+                  strokeWidth: isTarget ? 2.2 : isHovered ? 1.8 : 1,
+                  strokeDasharray: isTarget ? '8 6' : '4 6',
+                  filter: isTarget ? 'url(#orbitGlowEffect)' : 'none',
+                  opacity: isTarget ? 1 : isHovered ? 0.9 : 0.40,
+                  transition:
+                    'stroke 0.6s cubic-bezier(0.16, 1, 0.3, 1), stroke-width 0.4s ease, opacity 0.5s ease, filter 0.5s ease',
+                }}
+              />
+            );
+          })}
+        </svg>
 
         {/* Orbit Overlay Telemetry (Top-Left Compact Dock) */}
         <div className="absolute top-3 left-3 rounded-xl cosmic-glass p-2.5 font-mono-code text-[11px] text-slate-300 max-w-[220px]">

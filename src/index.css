@@ -29,49 +29,122 @@
   font-family: 'Poppins', sans-serif;
 }
 
-/* Authentic Cosmic Glassmorphism */
-.cosmic-glass {
-  background: rgba(8, 18, 38, 0.65);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+/* Authentic Aerospace Glassmorphism (Tier-1 Astrophysics Research Console) */
+.cosmic-glass,
+.glass-panel,
+.aerospace-glass {
+  background: rgba(7, 16, 34, 0.68);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid rgba(121, 220, 232, 0.16);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-.cosmic-glass-active {
-  background: rgba(12, 28, 56, 0.75);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(56, 189, 248, 0.5);
-  box-shadow: 0 0 15px rgba(56, 189, 248, 0.3), 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+.cosmic-glass-active,
+.aerospace-glass-active {
+  background: rgba(10, 24, 48, 0.78);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45), 0 0 20px var(--spectral-aura, rgba(56, 189, 248, 0.25)), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
-.cosmic-glass-subtle {
-  background: rgba(6, 14, 30, 0.55);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.25);
+.cosmic-glass-subtle,
+.aerospace-glass-subtle {
+  background: rgba(7, 16, 34, 0.50);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid rgba(121, 220, 232, 0.10);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
 .glow-cyan-neon {
   box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
 }
 
-/* Unified Astronomy-Grade Glassmorphism Panels */
-.glass-panel {
-  background: rgba(8, 18, 38, 0.65);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+/* Dynamic Spectral Reactive Auras */
+.spectral-reactive-aura {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45), 0 0 25px var(--spectral-aura, rgba(56, 189, 248, 0.25));
+  border-color: var(--spectral-border, rgba(121, 220, 232, 0.22));
+  transition: border-color 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.glass-panel-subtle {
-  background: rgba(8, 18, 38, 0.50);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+/* Astrometric Reticle & Corner Brackets */
+.hud-corner-bracket {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  pointer-events: none;
+  z-index: 10;
+  transition: border-color 0.3s ease;
+}
+
+.hud-corner-tl {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid #00f0ff;
+  border-left: 2px solid #00f0ff;
+}
+
+.hud-corner-tr {
+  top: -1px;
+  right: -1px;
+  border-top: 2px solid #00f0ff;
+  border-right: 2px solid #00f0ff;
+}
+
+.hud-corner-bl {
+  bottom: -1px;
+  left: -1px;
+  border-bottom: 2px solid #00f0ff;
+  border-left: 2px solid #00f0ff;
+}
+
+.hud-corner-br {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid #00f0ff;
+  border-right: 2px solid #00f0ff;
+}
+
+/* Planetary Pathlines CSS Transitions & Fluid Motion */
+.planetary-pathline {
+  transition: stroke 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              stroke-width 0.4s ease,
+              opacity 0.5s ease,
+              filter 0.5s ease;
+}
+
+@keyframes orbitDashFlow {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -120;
+  }
+}
+
+.animate-orbit-dash {
+  animation: orbitDashFlow 12s linear infinite;
+}
+
+.animate-orbit-target-dash {
+  animation: orbitDashFlow 6s linear infinite;
+}
+
+@keyframes reticlePulse {
+  0%, 100% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+.animate-reticle-pulse {
+  animation: reticlePulse 3s ease-in-out infinite;
 }
 
 /* Sci-fi grid backgrounds */
