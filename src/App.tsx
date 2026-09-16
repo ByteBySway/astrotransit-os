@@ -258,12 +258,12 @@ export function App() {
           );
         })}
 
-        {/* Subtle dark vignette scrim over the video so telemetry text stays 100% readable */}
+        {/* Pure cosmic obsidian vignette scrim over the video so telemetry text stays 100% crisp and legible */}
         <div
           className="absolute inset-0 pointer-events-none z-20"
           style={{
             background:
-              'radial-gradient(circle at 50% 40%, rgba(4, 12, 28, 0.45) 0%, rgba(3, 8, 20, 0.85) 85%)',
+              'radial-gradient(circle at 50% 40%, rgba(2, 6, 18, 0.45) 0%, rgba(2, 4, 9, 0.92) 85%)',
           }}
         />
       </div>

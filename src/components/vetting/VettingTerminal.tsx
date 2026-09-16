@@ -198,13 +198,13 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
 
           <button
             onClick={() => setShowTelemetryTuner(!showTelemetryTuner)}
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-sm text-[11px] font-mono-code uppercase tracking-wider border transition-all cursor-pointer ${
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-[11px] font-mono-code uppercase tracking-wider border transition-all cursor-pointer ${
               showTelemetryTuner
-                ? 'border-cyan-400 bg-cyan-950/90 text-cyan-300 font-bold shadow-[0_0_12px_rgba(56,189,248,0.3)]'
-                : 'border-white/10 bg-[#070b16]/70 text-slate-400 hover:text-slate-200'
+                ? 'border-[#00f0ff] bg-cyan-950/90 text-cyan-200 font-bold shadow-[0_0_15px_rgba(0,240,255,0.4)]'
+                : 'border-cyan-500/20 bg-[#040914]/80 text-slate-300 hover:text-white hover:border-cyan-400/40'
             }`}
           >
-            <Sliders className="h-3.5 w-3.5 text-cyan-400" />
+            <Sliders className="h-3.5 w-3.5 text-[#00f0ff]" />
             <span>Tune Telemetry</span>
           </button>
 
@@ -213,10 +213,10 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
             id="btn-export-dossier-pdf"
             onClick={handleExportPDF}
             disabled={isExportingPdf}
-            className="flex items-center gap-1.5 px-3 py-1 rounded-sm text-[11px] font-mono-code font-bold uppercase tracking-wider border border-cyan-500/50 bg-cyan-950/80 text-cyan-300 hover:bg-cyan-900/80 hover:text-white transition-all shadow-sm cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1 rounded-xl text-[11px] font-mono-code font-bold uppercase tracking-wider border border-[#00f0ff]/50 bg-cyan-950/90 text-cyan-200 hover:bg-[#00f0ff] hover:text-black transition-all shadow-[0_0_15px_rgba(0,240,255,0.25)] cursor-pointer"
             title="Export full candidate dossier as PDF"
           >
-            {isExportingPdf ? <RefreshCw className="h-3.5 w-3.5 animate-spin" /> : <FileText className="h-3.5 w-3.5 text-cyan-400" />}
+            {isExportingPdf ? <RefreshCw className="h-3.5 w-3.5 animate-spin" /> : <FileText className="h-3.5 w-3.5 text-[#00f0ff]" />}
             <span>Export Dossier (PDF)</span>
           </button>
         </div>
@@ -224,10 +224,10 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
 
       {/* Telemetry Tuner Drawer */}
       {showTelemetryTuner && (
-        <div className="rounded-sm cosmic-glass p-4 border border-white/[0.08] font-mono-code text-xs animate-fadeIn">
-          <div className="flex items-center justify-between pb-2 mb-3 border-b border-white/[0.08]">
-            <span className="text-cyan-300 font-bold flex items-center gap-2 uppercase tracking-wider text-[11px]">
-              <Sliders className="h-4 w-4 text-cyan-400" />
+        <div className="rounded-2xl cosmic-glass p-4 border border-cyan-500/25 font-mono-code text-xs animate-fadeIn">
+          <div className="flex items-center justify-between pb-2 mb-3 border-b border-cyan-500/20">
+            <span className="text-[#00f0ff] font-bold flex items-center gap-2 uppercase tracking-wider text-[11px]">
+              <Sliders className="h-4 w-4 text-[#00f0ff]" />
               Interactive Telemetry Injector (Simulate Astrometric / Transit Variations)
             </span>
             <button
@@ -241,7 +241,7 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
                   centroidOffset: selectedTarget.centroidOffset,
                 });
               }}
-              className="text-slate-400 hover:text-cyan-300 cursor-pointer uppercase text-[10px] tracking-wider"
+              className="text-slate-400 hover:text-[#00f0ff] cursor-pointer uppercase text-[10px] tracking-wider"
             >
               Reset to Actual
             </button>
@@ -327,84 +327,84 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
         </div>
       )}
 
-      {/* Luxury Telemetry Metric Cards (AstroPlus Aerospace Glass with HUD Corner Brackets & Rolling Odometer) */}
+      {/* Luxury Telemetry Metric Cards (Tier-1 Aerospace Glass with HUD Corner Brackets & Rolling Odometer) */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {/* Orbital Period */}
-        <div className="relative rounded-sm cosmic-glass p-4 border border-white/[0.08] flex flex-col justify-between spectral-reactive-aura overflow-hidden group">
+        <div className="relative rounded-2xl cosmic-glass p-4 border border-cyan-500/20 hover:border-cyan-400/50 transition-colors flex flex-col justify-between spectral-reactive-aura overflow-hidden group">
           <HudCornerBrackets watermark="EPOCH: J2026.5 // NASA-AMES" />
-          <div className="text-[10px] font-mono-code text-slate-400 uppercase tracking-widest">
+          <div className="text-[10px] font-mono-code text-slate-300 uppercase tracking-widest font-semibold">
             ORBITAL PERIOD [P]
           </div>
           <div className="mt-2 flex items-baseline justify-between z-10">
-            <span className="font-mono-code tabular-nums text-2xl sm:text-3xl font-black text-cyan-300 glow-cyan">
+            <span className="font-mono text-slate-100 font-mono tracking-tight font-bold tabular-nums text-2xl sm:text-3xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
               <RollingOdometer
                 value={customParams.orbitalPeriod}
                 decimals={4}
                 durationMs={300}
               />
             </span>
-            <span className="font-mono-code text-xs text-slate-400/60 uppercase">d</span>
+            <span className="font-mono-code text-xs text-cyan-400 font-bold uppercase drop-shadow-[0_0_6px_rgba(0,240,255,0.6)]">d</span>
           </div>
         </div>
 
         {/* Transit Depth */}
-        <div className="relative rounded-sm cosmic-glass p-4 border border-white/[0.08] flex flex-col justify-between spectral-reactive-aura overflow-hidden group">
+        <div className="relative rounded-2xl cosmic-glass p-4 border border-cyan-500/20 hover:border-cyan-400/50 transition-colors flex flex-col justify-between spectral-reactive-aura overflow-hidden group">
           <HudCornerBrackets watermark="INSTRUMENT: TESS/KEPLER" />
-          <div className="text-[10px] font-mono-code text-slate-400 uppercase tracking-widest">
+          <div className="text-[10px] font-mono-code text-slate-300 uppercase tracking-widest font-semibold">
             TRANSIT DEPTH [δ]
           </div>
           <div className="mt-2 flex items-baseline justify-between z-10">
-            <span className="font-mono-code tabular-nums text-2xl sm:text-3xl font-black text-cyan-300 glow-cyan">
+            <span className="font-mono text-slate-100 font-mono tracking-tight font-bold tabular-nums text-2xl sm:text-3xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
               <RollingOdometer
                 value={customParams.transitDepth}
                 formatLocale={true}
                 durationMs={300}
               />
             </span>
-            <span className="font-mono-code text-xs text-slate-400/60 uppercase">ppm</span>
+            <span className="font-mono-code text-xs text-cyan-400 font-bold uppercase drop-shadow-[0_0_6px_rgba(0,240,255,0.6)]">ppm</span>
           </div>
         </div>
 
         {/* Planet Radius */}
-        <div className="relative rounded-sm cosmic-glass p-4 border border-white/[0.08] flex flex-col justify-between spectral-reactive-aura overflow-hidden group">
+        <div className="relative rounded-2xl cosmic-glass p-4 border border-cyan-500/20 hover:border-cyan-400/50 transition-colors flex flex-col justify-between spectral-reactive-aura overflow-hidden group">
           <HudCornerBrackets watermark="CALIBRATED // ST_RAD" />
-          <div className="flex items-center justify-between gap-1 text-[10px] font-mono-code text-slate-400 uppercase tracking-widest">
+          <div className="flex items-center justify-between gap-1 text-[10px] font-mono-code text-slate-300 uppercase tracking-widest font-semibold">
             <span>PLANET RADIUS [Rp]</span>
             <span
               id="badge-planet-radius-class"
-              className={`text-[9px] px-1.5 py-0.5 rounded-sm border font-mono-code font-bold uppercase tracking-wider ${activeRadiusClassification.borderClass} ${activeRadiusClassification.bgClass} ${activeRadiusClassification.colorClass}`}
+              className={`text-[9px] px-1.5 py-0.5 rounded-md border font-mono-code font-bold uppercase tracking-wider ${activeRadiusClassification.borderClass} ${activeRadiusClassification.bgClass} ${activeRadiusClassification.colorClass}`}
             >
               {activeRadiusClassification.badgeLabel.replace('CLASS: ', '')}
             </span>
           </div>
           <div className="mt-2 flex items-baseline justify-between z-10">
-            <span className="font-mono-code tabular-nums text-2xl sm:text-3xl font-black text-cyan-300 glow-cyan">
+            <span className="font-mono text-slate-100 font-mono tracking-tight font-bold tabular-nums text-2xl sm:text-3xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
               <RollingOdometer
                 value={customParams.planetRadius}
                 decimals={2}
                 durationMs={300}
               />
             </span>
-            <span className="font-mono-code text-xs text-slate-400/60 uppercase">R⊕</span>
+            <span className="font-mono-code text-xs text-cyan-400 font-bold uppercase drop-shadow-[0_0_6px_rgba(0,240,255,0.6)]">R⊕</span>
           </div>
         </div>
 
         {/* Equilibrium Temp */}
-        <div className="relative rounded-sm cosmic-glass p-4 border border-white/[0.08] flex flex-col justify-between spectral-reactive-aura overflow-hidden group">
+        <div className="relative rounded-2xl cosmic-glass p-4 border border-cyan-500/20 hover:border-cyan-400/50 transition-colors flex flex-col justify-between spectral-reactive-aura overflow-hidden group">
           <HudCornerBrackets watermark="ALBEDO: 0.3 // STELLAR_TEFF" />
-          <div className="flex items-center justify-between text-[10px] font-mono-code text-slate-400 uppercase tracking-widest">
+          <div className="flex items-center justify-between text-[10px] font-mono-code text-slate-300 uppercase tracking-widest font-semibold">
             <span>EQUILIBRIUM TEMP [Teq]</span>
-            <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-pulse" />
+            <span className="h-2 w-2 rounded-full bg-[#00f0ff] shadow-[0_0_8px_#00f0ff] animate-pulse" />
           </div>
           <div className="mt-2 flex items-baseline justify-between z-10">
-            <span className="font-mono-code tabular-nums text-2xl sm:text-3xl font-black text-cyan-300 glow-cyan">
+            <span className="font-mono text-slate-100 font-mono tracking-tight font-bold tabular-nums text-2xl sm:text-3xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
               <RollingOdometer
                 value={selectedTarget.equilibriumTemp}
                 decimals={0}
                 durationMs={300}
               />
             </span>
-            <span className="font-mono-code text-xs text-slate-400/60 uppercase">K</span>
+            <span className="font-mono-code text-xs text-cyan-400 font-bold uppercase drop-shadow-[0_0_6px_rgba(0,240,255,0.6)]">K</span>
           </div>
         </div>
       </div>
@@ -428,15 +428,15 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
         {/* Right 1 Col: Triple Concentric Radial Ring Dial, False-Positive Matrix & Scientific Verdict */}
         <div className="space-y-4">
           {/* Concentric 3-Ring Radial Dial Card */}
-          <div className="rounded-sm cosmic-glass p-4 border border-white/[0.08] flex flex-col justify-between">
-            <div className="flex items-center justify-between pb-2 border-b border-white/[0.08]">
-              <span className="font-mono-code text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                <Cpu className="h-3.5 w-3.5 text-cyan-400" />
+          <div className="rounded-2xl cosmic-glass p-4 border border-cyan-500/20 hover:border-cyan-400/50 transition-colors flex flex-col justify-between">
+            <div className="flex items-center justify-between pb-2 border-b border-cyan-500/20">
+              <span className="font-mono-code text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
+                <Cpu className="h-3.5 w-3.5 text-[#00f0ff]" />
                 1D-CNN VetEngine Evaluation
               </span>
               <button
                 onClick={onOpenJsonModal}
-                className="text-slate-400 hover:text-cyan-300 cursor-pointer"
+                className="text-slate-400 hover:text-[#00f0ff] cursor-pointer"
                 title="Inspect raw schema"
               >
                 <Info className="h-3.5 w-3.5" />
@@ -456,41 +456,41 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
             </div>
 
             {/* Probabilities Progress Bars */}
-            <div className="mt-3 pt-3 border-t border-white/[0.08] space-y-2.5 font-mono-code text-xs">
+            <div className="mt-3 pt-3 border-t border-cyan-500/20 space-y-2.5 font-mono-code text-xs">
               <div>
-                <div className="flex justify-between text-slate-300 mb-1 text-[11px]">
+                <div className="flex justify-between text-slate-200 mb-1 text-[11px]">
                   <span>Planet Model Match</span>
-                  <span className="text-cyan-400 font-bold tabular-nums">{(pExoplanet / 100).toFixed(3)}</span>
+                  <span className="text-[#00f0ff] font-bold tabular-nums drop-shadow-[0_0_6px_rgba(0,240,255,0.5)]">{(pExoplanet / 100).toFixed(3)}</span>
                 </div>
-                <div className="h-1.5 w-full rounded-sm bg-slate-900 border border-white/5 overflow-hidden">
+                <div className="h-1.5 w-full rounded-full bg-[#020409] border border-cyan-500/20 overflow-hidden">
                   <div
-                    className="h-full bg-cyan-400 rounded-sm transition-all duration-700"
+                    className="h-full bg-[#00f0ff] rounded-full shadow-[0_0_8px_#00f0ff] transition-all duration-700"
                     style={{ width: `${Math.min(100, pExoplanet)}%` }}
                   />
                 </div>
               </div>
 
               <div>
-                <div className="flex justify-between text-slate-300 mb-1 text-[11px]">
+                <div className="flex justify-between text-slate-200 mb-1 text-[11px]">
                   <span>Eclipsing Binary</span>
                   <span className="text-amber-400 font-bold tabular-nums">{(pEB / 100).toFixed(3)}</span>
                 </div>
-                <div className="h-1.5 w-full rounded-sm bg-slate-900 border border-white/5 overflow-hidden">
+                <div className="h-1.5 w-full rounded-full bg-[#020409] border border-white/5 overflow-hidden">
                   <div
-                    className="h-full bg-amber-400 rounded-sm transition-all duration-700"
+                    className="h-full bg-amber-400 rounded-full transition-all duration-700"
                     style={{ width: `${Math.min(100, pEB)}%` }}
                   />
                 </div>
               </div>
 
               <div>
-                <div className="flex justify-between text-slate-300 mb-1 text-[11px]">
+                <div className="flex justify-between text-slate-200 mb-1 text-[11px]">
                   <span>Instrumental Noise</span>
                   <span className="text-slate-400 font-bold tabular-nums">{(pNoise / 100).toFixed(3)}</span>
                 </div>
-                <div className="h-1.5 w-full rounded-sm bg-slate-900 border border-white/5 overflow-hidden">
+                <div className="h-1.5 w-full rounded-full bg-[#020409] border border-white/5 overflow-hidden">
                   <div
-                    className="h-full bg-slate-500 rounded-sm transition-all duration-700"
+                    className="h-full bg-slate-500 rounded-full transition-all duration-700"
                     style={{ width: `${Math.min(100, pNoise)}%` }}
                   />
                 </div>
@@ -498,9 +498,9 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
             </div>
 
             {vettingResult && (
-              <div className="mt-3 p-3 rounded-sm bg-cyan-950/50 border border-cyan-500/40 text-[11px] font-mono-code text-cyan-200">
-                <div className="font-bold text-cyan-300 mb-1 flex items-center gap-1.5">
-                  <ShieldCheck className="h-3.5 w-3.5 text-cyan-400" />
+              <div className="mt-3 p-3 rounded-xl bg-cyan-950/60 border border-[#00f0ff]/40 text-[11px] font-mono-code text-cyan-200 shadow-[0_0_15px_rgba(0,240,255,0.15)]">
+                <div className="font-bold text-[#00f0ff] mb-1 flex items-center gap-1.5">
+                  <ShieldCheck className="h-3.5 w-3.5 text-[#00f0ff]" />
                   <span>Astrophysics Engine Verdict:</span>
                 </div>
                 <div className="leading-relaxed text-slate-200">{vettingResult.scientificVerdict}</div>
@@ -509,76 +509,76 @@ export const VettingTerminal: React.FC<VettingTerminalProps> = ({
           </div>
 
           {/* False-Positive Matrix with Strict NASA Ames Thresholds */}
-          <div className="rounded-sm cosmic-glass p-4 border border-white/[0.08] space-y-2.5">
-            <div className="font-mono-code text-xs font-bold text-slate-300 uppercase tracking-wider pb-2 border-b border-white/[0.08] flex items-center justify-between">
+          <div className="rounded-2xl cosmic-glass p-4 border border-cyan-500/20 hover:border-cyan-400/50 transition-colors space-y-2.5">
+            <div className="font-mono-code text-xs font-bold text-slate-200 uppercase tracking-wider pb-2 border-b border-cyan-500/20 flex items-center justify-between">
               <span>False-Positive Matrix</span>
-              <span className="text-[10px] text-cyan-400 font-normal">NASA Ames Protocols</span>
+              <span className="text-[10px] text-[#00f0ff] font-bold">NASA Ames Protocols</span>
             </div>
 
             <div className="space-y-2 font-mono-code text-xs">
               {/* Odd/Even Ratio */}
-              <div className="flex items-center justify-between p-2.5 rounded-sm border border-white/[0.06] bg-[#060b16]/70">
+              <div className="flex items-center justify-between p-2.5 rounded-xl border border-cyan-500/15 bg-[#040914]/85">
                 <div>
-                  <div className="text-slate-300 font-medium">Odd/Even Depth Test</div>
-                  <div className="text-[10px] text-slate-500 tabular-nums">Ratio: {customParams.oddEvenRatio.toFixed(3)} (0.95 - 1.05)</div>
+                  <div className="text-slate-200 font-medium">Odd/Even Depth Test</div>
+                  <div className="text-[10px] text-slate-400 tabular-nums">Ratio: {customParams.oddEvenRatio.toFixed(3)} (0.95 - 1.05)</div>
                 </div>
                 {oddEvenPass ? (
-                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-sm bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-[10px] font-mono-code font-bold uppercase tracking-wider">
+                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-[10px] font-mono-code font-bold uppercase tracking-wider">
                     <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" /> PASS
                   </span>
                 ) : (
-                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-sm bg-rose-950/80 border border-rose-500/40 text-rose-300 text-[10px] font-mono-code font-bold uppercase tracking-wider">
+                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-rose-950/80 border border-rose-500/40 text-rose-300 text-[10px] font-mono-code font-bold uppercase tracking-wider">
                     <XCircle className="h-3.5 w-3.5 text-rose-400" /> FAIL
                   </span>
                 )}
               </div>
 
               {/* Secondary Eclipse */}
-              <div className="flex items-center justify-between p-2.5 rounded-sm border border-white/[0.06] bg-[#060b16]/70">
+              <div className="flex items-center justify-between p-2.5 rounded-xl border border-cyan-500/15 bg-[#040914]/85">
                 <div>
-                  <div className="text-slate-300 font-medium">Secondary Eclipse</div>
-                  <div className="text-[10px] text-slate-500 tabular-nums">Depth: {customParams.secondaryEclipseDepth} ppm (&lt; 15 ppm)</div>
+                  <div className="text-slate-200 font-medium">Secondary Eclipse</div>
+                  <div className="text-[10px] text-slate-400 tabular-nums">Depth: {customParams.secondaryEclipseDepth} ppm (&lt; 15 ppm)</div>
                 </div>
                 {secPass ? (
-                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-sm bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-[10px] font-mono-code font-bold uppercase tracking-wider">
+                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-[10px] font-mono-code font-bold uppercase tracking-wider">
                     <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" /> PASS
                   </span>
                 ) : (
-                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-sm bg-rose-950/80 border border-rose-500/40 text-rose-300 text-[10px] font-mono-code font-bold uppercase tracking-wider">
+                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-rose-950/80 border border-rose-500/40 text-rose-300 text-[10px] font-mono-code font-bold uppercase tracking-wider">
                     <XCircle className="h-3.5 w-3.5 text-rose-400" /> FAIL
                   </span>
                 )}
               </div>
 
               {/* Centroid Astrometric Offset */}
-              <div className="flex items-center justify-between p-2.5 rounded-sm border border-white/[0.06] bg-[#060b16]/70">
+              <div className="flex items-center justify-between p-2.5 rounded-xl border border-cyan-500/15 bg-[#040914]/85">
                 <div>
-                  <div className="text-slate-300 font-medium">Centroid Astrometry</div>
-                  <div className="text-[10px] text-slate-500 tabular-nums">Offset: {customParams.centroidOffset.toFixed(2)}&quot; (&lt; 0.25&quot;)</div>
+                  <div className="text-slate-200 font-medium">Centroid Astrometry</div>
+                  <div className="text-[10px] text-slate-400 tabular-nums">Offset: {customParams.centroidOffset.toFixed(2)}&quot; (&lt; 0.25&quot;)</div>
                 </div>
                 {centroidPass ? (
-                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-sm bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-[10px] font-mono-code font-bold uppercase tracking-wider">
+                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-[10px] font-mono-code font-bold uppercase tracking-wider">
                     <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" /> PASS
                   </span>
                 ) : (
-                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-sm bg-amber-950/80 border border-amber-500/40 text-amber-300 text-[10px] font-mono-code font-bold uppercase tracking-wider">
+                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-950/80 border border-amber-500/40 text-amber-300 text-[10px] font-mono-code font-bold uppercase tracking-wider">
                     <AlertTriangle className="h-3.5 w-3.5 text-amber-400" /> SHIFT
                   </span>
                 )}
               </div>
 
               {/* Transit Signal-to-Noise Ratio (SNR) */}
-              <div className="flex items-center justify-between p-2.5 rounded-sm border border-white/[0.06] bg-[#060b16]/70">
+              <div className="flex items-center justify-between p-2.5 rounded-xl border border-cyan-500/15 bg-[#040914]/85">
                 <div>
-                  <div className="text-slate-300 font-medium">Photometric SNR</div>
-                  <div className="text-[10px] text-slate-500 tabular-nums">MES / SNR: {selectedTarget.snr || '34.2'} (&gt; 7.1)</div>
+                  <div className="text-slate-200 font-medium">Photometric SNR</div>
+                  <div className="text-[10px] text-slate-400 tabular-nums">MES / SNR: {selectedTarget.snr || '34.2'} (&gt; 7.1)</div>
                 </div>
                 {snrPass ? (
-                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-sm bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-[10px] font-mono-code font-bold uppercase tracking-wider">
+                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-[10px] font-mono-code font-bold uppercase tracking-wider">
                     <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" /> PASS
                   </span>
                 ) : (
-                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-sm bg-rose-950/80 border border-rose-500/40 text-rose-300 text-[10px] font-mono-code font-bold uppercase tracking-wider">
+                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-rose-950/80 border border-rose-500/40 text-rose-300 text-[10px] font-mono-code font-bold uppercase tracking-wider">
                     <XCircle className="h-3.5 w-3.5 text-rose-400" /> FAIL
                   </span>
                 )}

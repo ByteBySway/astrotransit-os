@@ -285,10 +285,10 @@ export const LightCurveViewer: React.FC<LightCurveViewerProps> = ({ target }) =>
   const hoveredPoint = hoverIndex !== null ? data[hoverIndex] : null;
 
   return (
-    <div className="relative rounded-2xl cosmic-glass p-4 spectral-reactive-aura overflow-hidden">
+    <div className="relative rounded-2xl cosmic-glass p-4 spectral-reactive-aura overflow-hidden border border-cyan-500/20 hover:border-cyan-400/50 transition-colors">
       <HudCornerBrackets watermark="EPOCH: J2026.5 // NASA-AMES // CALIBRATED" />
       {/* Header controls */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/[0.08]">
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-cyan-500/20">
         {/* Mode Switcher */}
         <div className="flex items-center gap-1.5 font-mono-code text-xs">
           {(['RAW', 'DETRENDED', 'RESIDUALS'] as const).map((mode) => (
@@ -301,8 +301,8 @@ export const LightCurveViewer: React.FC<LightCurveViewerProps> = ({ target }) =>
               }}
               className={`px-3 py-1 rounded-xl transition-all cursor-pointer ${
                 activeMode === mode
-                  ? 'border border-cyan-400/80 bg-cyan-950/90 text-cyan-300 font-bold shadow-[0_0_15px_rgba(56,189,248,0.3)]'
-                  : 'border border-white/10 bg-[#070c18]/70 text-slate-400 hover:text-slate-200 hover:bg-[#0c1426]'
+                  ? 'border border-[#00f0ff] bg-cyan-950/90 text-cyan-200 font-bold shadow-[0_0_15px_rgba(0,240,255,0.45)]'
+                  : 'border border-cyan-500/20 bg-[#040914]/80 text-slate-300 hover:text-white hover:border-cyan-400/40'
               }`}
             >
               {mode}
@@ -317,8 +317,8 @@ export const LightCurveViewer: React.FC<LightCurveViewerProps> = ({ target }) =>
             }}
             className={`px-2.5 py-1 rounded-xl border transition-all cursor-pointer ${
               showErrorBars
-                ? 'border-cyan-500/40 bg-cyan-950/60 text-cyan-300 shadow-[0_0_10px_rgba(56,189,248,0.2)]'
-                : 'border-white/10 bg-[#070c18]/70 text-slate-400 hover:text-slate-200'
+                ? 'border-[#00f0ff]/60 bg-cyan-950/70 text-[#00f0ff] shadow-[0_0_10px_rgba(0,240,255,0.3)]'
+                : 'border-cyan-500/20 bg-[#040914]/80 text-slate-400 hover:text-slate-200'
             }`}
             title="Toggle Photometric Error Bars (±1σ)"
           >

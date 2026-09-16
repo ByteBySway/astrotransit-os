@@ -31,17 +31,17 @@ export const TpfCcdViewer: React.FC<TpfCcdViewerProps> = ({ target }) => {
   };
 
   return (
-    <div className="relative rounded-sm cosmic-glass p-4 border border-white/[0.08] flex flex-col justify-between">
-      <div className="flex items-center justify-between pb-2 border-b border-white/[0.08]">
-        <div className="flex items-center gap-1.5 text-xs font-mono-code text-cyan-400 font-semibold uppercase tracking-wider">
-          <Grid className="h-3.5 w-3.5" />
+    <div className="relative rounded-2xl cosmic-glass p-4 border border-cyan-500/20 hover:border-cyan-400/50 transition-colors flex flex-col justify-between">
+      <div className="flex items-center justify-between pb-2 border-b border-cyan-500/20">
+        <div className="flex items-center gap-1.5 text-xs font-mono-code text-[#00f0ff] font-semibold uppercase tracking-wider">
+          <Grid className="h-3.5 w-3.5 text-[#00f0ff]" />
           <span>TPF 5x5 CCD FLUX MATRIX</span>
         </div>
         <div
-          className={`flex items-center gap-1 text-[10px] font-mono-code px-2 py-0.5 rounded-sm border uppercase tracking-wider ${
+          className={`flex items-center gap-1 text-[10px] font-mono-code px-2 py-0.5 rounded-md border uppercase tracking-wider ${
             isAlert
-              ? 'border-amber-500/50 bg-amber-950/40 text-amber-300'
-              : 'border-cyan-500/40 bg-cyan-950/40 text-cyan-300'
+              ? 'border-amber-500/50 bg-amber-950/60 text-amber-300'
+              : 'border-cyan-500/40 bg-cyan-950/60 text-[#00f0ff]'
           }`}
         >
           {isAlert ? <AlertTriangle className="h-3 w-3 text-amber-400" /> : <CheckCircle className="h-3 w-3 text-emerald-400" />}
@@ -51,7 +51,7 @@ export const TpfCcdViewer: React.FC<TpfCcdViewerProps> = ({ target }) => {
 
       {/* 5x5 Grid Container */}
       <div className="my-auto py-2 flex items-center justify-center">
-        <div className="relative grid grid-cols-5 gap-1 p-2 rounded-sm border border-white/10 bg-[#060b16]/90 backdrop-blur-md">
+        <div className="relative grid grid-cols-5 gap-1 p-2 rounded-xl border border-cyan-500/20 bg-[#040914]/90 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.6)]">
           {matrix.map((row, y) =>
             row.map((val, x) => (
               <div
